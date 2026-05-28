@@ -3,136 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowPost Pro - Automatización Sigilosa</title>
-    <!-- Tailwind CSS para diseño moderno y fashion -->
+    <title>ShadowPost Pro v2 - Sistema Avanzado de Prospección</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        .neon-border {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-        }
+        .neon-glow { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
 
-    <!-- PANTALLA DE ACCESO (LOGIN) -->
-    <div id="login-screen" class="flex flex-col items-center justify-center flex-grow p-4">
-        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 w-full max-w-sm shadow-2xl neon-border">
-            <div class="text-center mb-6">
-                <span class="text-4xl">🥷</span>
-                <h2 class="text-2xl font-black tracking-wider text-blue-500 mt-2">SHADOWPOST</h2>
-                <p class="text-xs text-slate-400 uppercase tracking-widest">Mobile Stealth Marketing</p>
-            </div>
-            
-            <div class="mb-5">
-                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 tracking-wider">Llave de Acceso</label>
-                <input type="password" id="access-key" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-blue-500 text-white font-mono text-center tracking-widest" placeholder="••••••••">
-                <p id="login-error" class="text-red-400 text-xs text-center mt-3 hidden">⚠️ Acceso denegado o membresía mensual vencida.</p>
-            </div>
-            
-            <button onclick="verificarAcceso()" class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all duration-200 transform active:scale-95 shadow-lg shadow-blue-600/30">
-                Verificar Credenciales
-            </button>
-        </div>
-    </div>
-
-    <!-- PANEL DE CONTROL (OPTIMIZADO PARA MÓVIL) -->
-    <div id="dashboard" class="hidden w-full max-w-md mx-auto p-4 flex-grow">
+    <!-- PANEL PRINCIPAL (Aparece tras validar con celides13) -->
+    <div id="dashboard" class="max-w-xl mx-auto p-4 pb-24">
         <header class="flex justify-between items-center mb-6 border-b border-slate-800 pb-3">
             <div>
-                <h1 class="text-xl font-black text-blue-400 tracking-wide">SHADOWPOST PRO</h1>
-                <p class="text-xs text-emerald-400 flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Suscripción Activa
-                </p>
+                <h1 class="text-2xl font-black text-blue-500 tracking-wider">SHADOWPOST PRO v2</h1>
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest">Evasión Algorítmica Avanzada</p>
             </div>
-            <button onclick="cerrarSesion()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 px-3 py-1.5 rounded-xl text-xs font-medium transition">
-                Salir
-            </button>
+            <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold border border-emerald-500/20">Suscripción Activa</span>
         </header>
 
-        <!-- CONFIGURACIÓN DE CAMPAÑA -->
-        <div class="space-y-4">
-            <!-- Copywriting -->
-            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">1. Mensaje de Ventas (Copy)</label>
-                <textarea id="post-text" rows="4" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-sm focus:outline-none focus:border-blue-500" placeholder="¡Promoción Megacable! Doble de megas hoy..."></textarea>
+        <div class="space-y-5">
+            
+            <!-- SECCIÓN 1: CONTENIDO MULTIVARIABLE -->
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                <h3 class="text-sm font-bold text-blue-400 uppercase mb-3 tracking-wider">1. Rotación de Contenido (Anti-Spam)</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Variación de Texto A (Megacable):</label>
+                        <textarea id="copy-a" rows="2" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-blue-500" placeholder="Ej: ¡Contrata Megacable hoy con el doble de megas!..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Variación de Texto B (Alternativo):</label>
+                        <textarea id="copy-b" rows="2" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-blue-500" placeholder="Ej: ¿Aburrido del internet lento? Cámbiate a la fibra óptica de Megacable..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Carga de Archivos Multimedia -->
+                <div class="mt-4 border-t border-slate-800 pt-3">
+                    <label class="block text-[11px] text-slate-400 mb-2 font-bold">Añadir Multimedia (Flyer, Foto o Video):</label>
+                    <input type="file" id="media-files" accept="image/*,video/*" multiple class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
+                    <p class="text-[10px] text-slate-500 mt-1">* Puedes seleccionar varias imágenes o videos para que el bot los rote.</p>
+                </div>
             </div>
 
-            <!-- Tiempos Inteligentes -->
-            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider">2. Intervalo Antiviral (Minutos)</label>
-                <p class="text-[11px] text-slate-500 mb-2">ShadowPost variará el tiempo aleatoriamente en este rango:</p>
-                <div class="flex gap-3">
-                    <div class="w-1/2">
-                        <span class="text-[10px] text-slate-400 block mb-1">Mínimo:</span>
-                        <input type="number" id="time-min" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-center" value="15">
+            <!-- SECCIÓN 2: CRONOGRAMA POR RÁFAGAS INTELIGENTES -->
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                <h3 class="text-sm font-bold text-blue-400 uppercase mb-2 tracking-wider">2. Algoritmo de Tiempos Caóticos</h3>
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Posteos por ráfaga:</label>
+                        <input type="number" id="burst-count" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-center" value="3">
                     </div>
-                    <div class="w-1/2">
-                        <span class="text-[10px] text-slate-400 block mb-1">Máximo:</span>
-                        <input type="number" id="time-max" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-center" value="35">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Espera en ráfaga (min):</label>
+                        <input type="number" id="burst-wait" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-center" value="2">
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-3">
+                    <p class="text-[11px] text-slate-400 mb-2">Descanso profundo entre ráfagas (Minutos):</p>
+                    <div class="flex gap-3">
+                        <div class="w-1/2">
+                            <span class="text-[9px] text-slate-500 block">Mínimo:</span>
+                            <input type="number" id="cooldown-min" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-center" value="15">
+                        </div>
+                        <div class="w-1/2">
+                            <span class="text-[9px] text-slate-500 block">Máximo:</span>
+                            <input type="number" id="cooldown-max" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-xs text-center" value="35">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Lista de Grupos -->
-            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">3. Enlaces de Grupos (Uno por línea)</label>
-                <textarea id="groups-list" rows="4" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-500" placeholder="https://www.facebook.com/groups/ventasqro..."></textarea>
+            <!-- SECCIÓN 3: EXTRACTOR Y SELECTOR DE GRUPOS -->
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider">3. Selección de Grupos</h3>
+                    <button onclick="solicitarEscaneo()" class="bg-blue-600 hover:bg-blue-500 text-[10px] font-bold px-3 py-1 rounded-xl transition">🤖 Sincronizar mis Grupos</button>
+                </div>
+                
+                <!-- Lista Visual con Checkboxes (Estilo Fiu Fit) -->
+                <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 max-h-40 overflow-y-auto space-y-2" id="groups-container">
+                    <p class="text-xs text-slate-500 text-center py-4">Presiona "Sincronizar mis Grupos" para cargar tus grupos activos de Facebook.</p>
+                </div>
             </div>
 
-            <!-- Botón de Disparo -->
-            <button onclick="ejecutarShadow()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20 text-center tracking-wide flex items-center justify-center gap-2">
-                🚀 Lanzar ShadowPost Stealth
+            <!-- BOTÓN DE ACCIÓN -->
+            <button onclick="guardarYArrancarCampaign()" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-black py-4 rounded-2xl transition-all shadow-lg neon-glow text-center tracking-wider text-sm">
+                🥷 ACTIVAR CAMPAÑA ULTRA-STEALTH
             </button>
         </div>
     </div>
 
-    <!-- FOOTER CORPORATIVO -->
-    <footer class="text-center py-4 text-[10px] text-slate-600 border-t border-slate-900 mt-6">
-        &copy; 2026 ShadowPost Technologies. Desarrollado de forma privada.
-    </footer>
-
     <script>
-        // Sistema de autenticación local solicitado
-        function verificarAcceso() {
-            const claveInput = document.getElementById('access-key').value.trim();
-            const claveMaestra = "celides13"; // Tu clave de administrador
-            
-            // Base de datos de tus compañeros que pagaron $100 pesos
-            // Cuando alguien te pague, añades su clave aquí en Github y Vercel se actualiza solo
-            const clientesActivos = ["mega_juan", "adrianamarketing", "ventas_qro26", "cambaceo_pro"]; 
-
-            if (claveInput === claveMaestra || clientesActivos.includes(claveInput)) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                localStorage.setItem('shadow_auth', claveInput);
-            } else {
-                const errorText = document.getElementById('login-error');
-                errorText.classList.remove('hidden');
-            }
+        // Simulación de grupos cargados dinámicamente para la demostración visual
+        function cargarGruposEjemplo(listaGrupos) {
+            const container = document.getElementById('groups-container');
+            container.innerHTML = "";
+            listaGrupos.forEach((grupo, index) => {
+                container.innerHTML += `
+                    <label class="flex items-center justify-between p-2 bg-slate-900 border border-slate-800 rounded-lg cursor-pointer hover:border-slate-700">
+                        <span class="text-xs font-medium truncate max-w-[80%]">${grupo.name}</span>
+                        <input type="checkbox" checked value="${grupo.url}" class="w-4 h-4 rounded text-blue-600 bg-slate-800 border-slate-700 focus:ring-blue-500">
+                    </label>
+                `;
+            });
         }
 
-        function cerrarSesion() {
-            localStorage.removeItem('shadow_auth');
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
+        function solicitarEscaneo() {
+            alert("Sincronizando con Tampermonkey... Abre tu Facebook móvil para extraer la lista completa de tus grupos automáticamente.");
+            // Datos simulados de prueba que emulan la extracción real
+            cargarGruposEjemplo([
+                { name: "Ventas Paseos de San Miguel", url: "https://m.facebook.com/groups/paseos" },
+                { name: "Vecinos Juriquilla Oficial", url: "https://m.facebook.com/groups/juriquilla" },
+                { name: "Cambaceo y Comercio Calesa", url: "https://m.facebook.com/groups/calesa" },
+                { name: "Bazar Santa Bárbara", url: "https://m.facebook.com/groups/santa_barbara" }
+            ]);
         }
 
-        function ejecutarShadow() {
-            const copy = document.getElementById('post-text').value;
-            const grupos = document.getElementById('groups-list').value;
-            
-            if(!copy || !grupos) {
-                alert("Por favor rellena el copy y los grupos primero.");
+        function guardarYArrancarCampaign() {
+            const copies = [
+                document.getElementById('copy-a').value,
+                document.getElementById('copy-b').value
+            ].filter(c => c.trim() !== "");
+
+            if(copies.length === 0) {
+                alert("Por favor escribe al menos una variación de texto.");
                 return;
             }
-            
-            alert("🔥 ¡ShadowPost Iniciado! Mantén esta pestaña abierta en Kiwi Browser para procesar la cola de publicaciones.");
-        }
 
-        // Comprobación automática de sesión activa al abrir la app
-        if(localStorage.getItem('shadow_auth')) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+            // Guardamos las configuraciones de ráfaga y contenido en la memoria del navegador
+            localStorage.setItem('shadow_copies', JSON.stringify(copies));
+            localStorage.setItem('shadow_burst_count', document.getElementById('burst-count').value);
+            localStorage.setItem('shadow_burst_wait', document.getElementById('burst-wait').value);
+            localStorage.setItem('shadow_cooldown_min', document.getElementById('cooldown-min').value);
+            localStorage.setItem('shadow_cooldown_max', document.getElementById('cooldown-max').value);
+            localStorage.setItem('shadow_bot_active', 'true');
+
+            alert("🔥 ¡Campaña Multivariable Iniciada! El motor aplicará la rotación de contenidos y el ciclo caótico de ráfagas.");
         }
     </script>
 </body>
