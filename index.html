@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowPost Pro - Automatización Sigilosa</title>
+    <!-- Tailwind CSS para diseño moderno y fashion -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .neon-border {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <!-- PANTALLA DE ACCESO (LOGIN) -->
+    <div id="login-screen" class="flex flex-col items-center justify-center flex-grow p-4">
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 w-full max-w-sm shadow-2xl neon-border">
+            <div class="text-center mb-6">
+                <span class="text-4xl">🥷</span>
+                <h2 class="text-2xl font-black tracking-wider text-blue-500 mt-2">SHADOWPOST</h2>
+                <p class="text-xs text-slate-400 uppercase tracking-widest">Mobile Stealth Marketing</p>
+            </div>
+            
+            <div class="mb-5">
+                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 tracking-wider">Llave de Acceso</label>
+                <input type="password" id="access-key" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-blue-500 text-white font-mono text-center tracking-widest" placeholder="••••••••">
+                <p id="login-error" class="text-red-400 text-xs text-center mt-3 hidden">⚠️ Acceso denegado o membresía mensual vencida.</p>
+            </div>
+            
+            <button onclick="verificarAcceso()" class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all duration-200 transform active:scale-95 shadow-lg shadow-blue-600/30">
+                Verificar Credenciales
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL DE CONTROL (OPTIMIZADO PARA MÓVIL) -->
+    <div id="dashboard" class="hidden w-full max-w-md mx-auto p-4 flex-grow">
+        <header class="flex justify-between items-center mb-6 border-b border-slate-800 pb-3">
+            <div>
+                <h1 class="text-xl font-black text-blue-400 tracking-wide">SHADOWPOST PRO</h1>
+                <p class="text-xs text-emerald-400 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Suscripción Activa
+                </p>
+            </div>
+            <button onclick="cerrarSesion()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 px-3 py-1.5 rounded-xl text-xs font-medium transition">
+                Salir
+            </button>
+        </header>
+
+        <!-- CONFIGURACIÓN DE CAMPAÑA -->
+        <div class="space-y-4">
+            <!-- Copywriting -->
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">1. Mensaje de Ventas (Copy)</label>
+                <textarea id="post-text" rows="4" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-sm focus:outline-none focus:border-blue-500" placeholder="¡Promoción Megacable! Doble de megas hoy..."></textarea>
+            </div>
+
+            <!-- Tiempos Inteligentes -->
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider">2. Intervalo Antiviral (Minutos)</label>
+                <p class="text-[11px] text-slate-500 mb-2">ShadowPost variará el tiempo aleatoriamente en este rango:</p>
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <span class="text-[10px] text-slate-400 block mb-1">Mínimo:</span>
+                        <input type="number" id="time-min" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-center" value="15">
+                    </div>
+                    <div class="w-1/2">
+                        <span class="text-[10px] text-slate-400 block mb-1">Máximo:</span>
+                        <input type="number" id="time-max" class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-center" value="35">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Grupos -->
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">3. Enlaces de Grupos (Uno por línea)</label>
+                <textarea id="groups-list" rows="4" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-500" placeholder="https://www.facebook.com/groups/ventasqro..."></textarea>
+            </div>
+
+            <!-- Botón de Disparo -->
+            <button onclick="ejecutarShadow()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20 text-center tracking-wide flex items-center justify-center gap-2">
+                🚀 Lanzar ShadowPost Stealth
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER CORPORATIVO -->
+    <footer class="text-center py-4 text-[10px] text-slate-600 border-t border-slate-900 mt-6">
+        &copy; 2026 ShadowPost Technologies. Desarrollado de forma privada.
+    </footer>
+
+    <script>
+        // Sistema de autenticación local solicitado
+        function verificarAcceso() {
+            const claveInput = document.getElementById('access-key').value.trim();
+            const claveMaestra = "celides13"; // Tu clave de administrador
+            
+            // Base de datos de tus compañeros que pagaron $100 pesos
+            // Cuando alguien te pague, añades su clave aquí en Github y Vercel se actualiza solo
+            const clientesActivos = ["mega_juan", "adrianamarketing", "ventas_qro26", "cambaceo_pro"]; 
+
+            if (claveInput === claveMaestra || clientesActivos.includes(claveInput)) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                localStorage.setItem('shadow_auth', claveInput);
+            } else {
+                const errorText = document.getElementById('login-error');
+                errorText.classList.remove('hidden');
+            }
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('shadow_auth');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function ejecutarShadow() {
+            const copy = document.getElementById('post-text').value;
+            const grupos = document.getElementById('groups-list').value;
+            
+            if(!copy || !grupos) {
+                alert("Por favor rellena el copy y los grupos primero.");
+                return;
+            }
+            
+            alert("🔥 ¡ShadowPost Iniciado! Mantén esta pestaña abierta en Kiwi Browser para procesar la cola de publicaciones.");
+        }
+
+        // Comprobación automática de sesión activa al abrir la app
+        if(localStorage.getItem('shadow_auth')) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
