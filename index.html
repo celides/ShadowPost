@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadowPost Pro v3 - Ecosistema Cyberpunk de Prospección</title>
-    <!-- Tailwind CSS para estilizado rápido -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Estilos y Animaciones de Ciencia Ficción (Estilo Tron) */
@@ -29,10 +28,8 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans relative overflow-x-hidden">
 
-    <!-- Estela de luz interactiva para el manual/guía -->
     <div id="laser-streak" class="tron-streak"></div>
 
-    <!-- PANTALLA DE ACCESO CON CANDADO ANTIPIRATERÍA -->
     <div id="login-screen" class="flex flex-col items-center justify-center min-h-screen p-4 z-10 relative">
         <div class="bg-slate-900/90 p-6 rounded-2xl border border-cyan-500/30 w-full max-w-sm shadow-2xl neon-border-blue backdrop-blur-md">
             <div class="text-center mb-6">
@@ -53,16 +50,17 @@
         </div>
     </div>
 
-    <!-- PANEL DE CONTROL HÍBRIDO (ESCRITORIO Y CELULAR) -->
     <div id="dashboard" class="hidden w-full max-w-6xl mx-auto p-4 lg:p-6 min-h-screen flex flex-col justify-between">
         
-        <!-- ENCABEZADO TRON -->
         <header class="flex flex-col sm:flex-row justify-between items-center mb-6 border-b border-cyan-950 pb-4 gap-4">
             <div>
-                <h1 class="text-2xl font-black text-cyan-400 tracking-wide text-neon">SHADOWPOST CORE v3.0</h1>
+                <h1 class="text-2xl font-black text-cyan-400 tracking-wide text-neon">SHADOWPOST CORE v3.1</h1>
                 <p class="text-xs text-slate-400">ID Dispositivo Activo: <span id="device-fingerprint" class="font-mono text-cyan-500"></span></p>
             </div>
             <div class="flex items-center gap-3">
+                <div id="wakelock-status" class="text-[10px] uppercase font-mono px-2 py-1 rounded bg-slate-900 border border-slate-800 text-slate-500">
+                    🔒 WakeLock: Inactivo
+                </div>
                 <button onclick="activarGuiaTron()" class="bg-slate-900 border border-cyan-500/40 text-cyan-400 text-xs font-bold px-3 py-2 rounded-xl hover:bg-cyan-950 transition flex items-center gap-2">
                     <span>🏍️</span> Guía de Luz
                 </button>
@@ -72,10 +70,8 @@
             </div>
         </header>
 
-        <!-- CONTENEDOR GRID ADAPTABLE -->
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow">
             
-            <!-- COLUMNA 1: INTELIGENCIA ARTIFICIAL Y COPIES -->
             <div id="step-1" class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 space-y-4 backdrop-blur-sm">
                 <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">🤖 1. IA Neuroventas & Multi-Número</h3>
                 
@@ -107,7 +103,6 @@
                 </div>
             </div>
 
-            <!-- COLUMNA 2: SEGMENTACIÓN DE COLONIAS Y MULTIMEDIA -->
             <div id="step-2" class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 space-y-4 backdrop-blur-sm">
                 <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">📍 2. Rutas Geográficas & Flyers</h3>
                 
@@ -137,11 +132,9 @@
                 </div>
             </div>
 
-            <!-- COLUMNA 3: SHADOWRADAR Y MOTOR DE TIEMPOS IA -->
             <div id="step-3" class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 space-y-4 backdrop-blur-sm">
                 <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">🦅 3. Radar de Leads & Algoritmo Caótico</h3>
                 
-                <!-- SHADOWRADAR INTERRUPT -->
                 <div class="bg-cyan-950/20 border border-cyan-500/20 p-3 rounded-xl flex items-center justify-between">
                     <div>
                         <h4 class="text-xs font-bold text-cyan-400 flex items-center gap-1">
@@ -155,7 +148,6 @@
                     </label>
                 </div>
 
-                <!-- TIEMPOS AUTOMÁTICOS INTELIGENTES -->
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
                     <span class="text-[11px] font-bold text-slate-400 block">Estrategia del Cronograma actual:</span>
                     <div class="text-xs font-mono text-slate-400 space-y-1">
@@ -171,7 +163,6 @@
             </div>
         </main>
 
-        <!-- COBRANZA AUTOMÁTICA COHETES (SPEI-CHECK) -->
         <div id="payment-banner" class="hidden mt-4 bg-amber-950/40 border border-amber-500/30 p-3 rounded-xl flex flex-col sm:flex-row justify-between items-center text-xs gap-3">
             <p class="text-amber-300 font-medium">⚠️ Tu membresía expira en 48 horas. Para renovar, transfiere $100 MXN a la cuenta: <span class="font-mono bg-slate-950 px-1.5 py-0.5 rounded text-white">BBVA 1234 5678 9012</span></p>
             <button onclick="alert('Sube tu captura SPEI para validación inmediata.')" class="bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Subir Comprobante</button>
@@ -182,8 +173,42 @@
         </footer>
     </div>
 
-    <!-- CONTROL DE LÓGICA JAVASCRIPT -->
     <script>
+        // Objeto global de control para Wake Lock (Prevención de suspensión de pantalla)
+        let wakeLock = null;
+
+        async function solicitarWakeLock() {
+            if ('wakeLock' in navigator) {
+                try {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    const statusDiv = document.getElementById('wakelock-status');
+                    statusDiv.innerText = "⚡ WakeLock: COMPLETO";
+                    statusDiv.classList.remove('text-slate-500', 'bg-slate-900');
+                    statusDiv.classList.add('text-emerald-400', 'bg-emerald-950/30', 'border-emerald-500/40');
+                    
+                    wakeLock.addEventListener('release', () => {
+                        restablecerWakeLockUI();
+                    });
+                } catch (err) {
+                    console.error(`Fallo de hardware WakeLock: ${err.message}`);
+                }
+            }
+        }
+
+        function restablecerWakeLockUI() {
+            const statusDiv = document.getElementById('wakelock-status');
+            statusDiv.innerText = "🔒 WakeLock: Inactivo";
+            statusDiv.classList.remove('text-emerald-400', 'bg-emerald-950/30', 'border-emerald-500/40');
+            statusDiv.classList.add('text-slate-500', 'bg-slate-900');
+        }
+
+        // Escuchar cuando el usuario vuelve a enfocar la pestaña para recuperar el WakeLock si se soltó
+        document.addEventListener('visibilitychange', async () => {
+            if (wakeLock !== null && document.visibilityState === 'visible') {
+                await solicitarWakeLock();
+            }
+        });
+
         // Generador de huella digital única para evitar piratería de claves
         function obtenerHuellaDispositivo() {
             return btoa(navigator.userAgent).substring(10, 22).toLowerCase();
@@ -195,7 +220,6 @@
             const clientesAutorizados = ["mega_juan", "ventas_qro", "juriquilla_pro", "cambaceo_top"];
 
             if (claveInput === claveMaestra || clientesAutorizados.includes(claveInput)) {
-                // Guarda la combinación de la clave con la huella del teléfono
                 const fingerprint = obtenerHuellaDispositivo();
                 localStorage.setItem('shadow_auth', claveInput);
                 localStorage.setItem('shadow_device', fingerprint);
@@ -204,7 +228,6 @@
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('device-fingerprint').innerText = fingerprint;
                 
-                // Si es un usuario de $150 pesos, desbloqueamos la ranura del segundo chip
                 if(claveInput === claveMaestra || claveInput === "cambaceo_top") {
                     document.getElementById('tel-2').disabled = false;
                     document.getElementById('tel-2').placeholder = "Segundo Número Habilitado";
@@ -214,31 +237,41 @@
             }
         }
 
-        // Lógica de simulación de IA (Groq / Gemini) para las 3 variaciones de neuroventas
-        function generarVariacionesIA() {
+        // Conexión del motor de IA preparado para Serverless Proxy de Vercel
+        async function generarVariacionesIA() {
             const idea = document.getElementById('base-prompt').value;
             const t1 = document.getElementById('tel-1').value || "4420000000";
+            const t2 = document.getElementById('tel-2').disabled ? "" : document.getElementById('tel-2').value;
             if(!idea) { alert("Escribe una idea base primero."); return; }
 
             const outputsContainer = document.getElementById('ai-outputs');
             outputsContainer.innerHTML = `<p class="text-xs text-cyan-400 animate-pulse font-mono">Invocando IA de Neuroventas... Pensando variaciones evasivas...</p>`;
 
-            setTimeout(() => {
-                const variaciones = [
-                    `🔥 ¡ATENCIÓN QUERÉTARO! Solo por hoy, duplica tus megas con la fibra óptica de Megacable. Paquete completo con TV. Info directa al WhatsApp: wa.me/${t1} [Código: RÁPIDO]`,
-                    `🚀 ¿Problemas de velocidad en casa? Cambia hoy a Megacable y recibe instalación prioritaria esta misma semana. Consulta cobertura sin compromiso aquí: wa.me/${t1} [ID: FB-PRO]`,
-                    `💰 Cuida tu economía familiar sin perder conexión. Megacable tiene paquetes diseñados para home office y streaming al mejor precio de la zona. Da clic aquí: wa.me/${t1} [Ref: ECO]`
-                ];
+            try {
+                // Aquí se conectará directamente a tu endpoint seguro en Vercel
+                // const response = await fetch('/api/generate-variations', { method: 'POST', body: JSON.stringify({ idea, t1, t2 }) });
+                // const data = await response.json();
                 
-                outputsContainer.innerHTML = "";
-                variaciones.forEach((v, i) => {
-                    outputsContainer.innerHTML += `<div class="bg-slate-950 p-2 rounded-lg border border-slate-800 text-[11px] text-slate-300 font-mono">${i+1}. ${v}</div>`;
-                });
-                localStorage.setItem('shadow_copies', JSON.stringify(variaciones));
-            }, 1500);
+                // Simulación mientras configuras las variables en el Dashboard de Vercel:
+                setTimeout(() => {
+                    const variaciones = [
+                        `🔥 ¡ATENCIÓN QUERÉTARO! Solo por hoy, duplica tus megas con la fibra óptica de Megacable. Paquete completo con TV. Info directa al WhatsApp: wa.me/${t1} [Código: RÁPIDO]`,
+                        `🚀 ¿Problemas de velocidad en casa? Cambia hoy a Megacable y recibe instalación prioritaria esta misma semana. Consulta cobertura sin compromiso aquí: wa.me/${t1} [ID: FB-PRO]`,
+                        `💰 Cuida tu economía familiar sin perder conexión. Megacable tiene paquetes diseñados para home office y streaming al mejor precio de la zona. Da clic aquí: wa.me/${t1} [Ref: ECO]`
+                    ];
+                    
+                    outputsContainer.innerHTML = "";
+                    variaciones.forEach((v, i) => {
+                        outputsContainer.innerHTML += `<div class="bg-slate-950 p-2 rounded-lg border border-slate-800 text-[11px] text-slate-300 font-mono">${i+1}. ${v}</div>`;
+                    });
+                    localStorage.setItem('shadow_copies', JSON.stringify(variaciones));
+                }, 1500);
+
+            } catch (error) {
+                outputsContainer.innerHTML = `<p class="text-xs text-red-400 font-mono">⚠️ Error en la red neuronal de ShadowPost.</p>`;
+            }
         }
 
-        // Simulación de segmentación inteligente por colonias
         const baseGrupos = {
             manana: [{name: "Ventas La Estancia", url: "https://m.facebook.com/groups/estancia"}, {name: "Bazar Santa Bárbara", url: "https://m.facebook.com/groups/santa_barbara"}],
             tarde: [{name: "Comercio Paseos de San Miguel", url: "https://m.facebook.com/groups/paseos"}, {name: "Vecinos Calesa", url: "https://m.facebook.com/groups/calesa"}],
@@ -261,10 +294,20 @@
                 container.innerHTML += `
                     <label class="flex items-center justify-between p-1.5 bg-slate-900 border border-slate-800 rounded-lg">
                         <span class="truncate max-w-[80%] font-mono text-[11px]">${g.name}</span>
-                        <input type="checkbox" checked value="${g.url}" class="w-3.5 h-3.5 text-cyan-600 bg-slate-950 rounded border-slate-700">
+                        <input type="checkbox" checked value="${g.url}" class="w-3.5 h-3.5 text-cyan-600 bg-slate-950 rounded border-slate-700 shadow_target_group">
                     </label>
                 `;
             });
+            actualizarGruposEnMemoria();
+        }
+
+        function actualizarGruposEnMemoria() {
+            const checkboxes = document.querySelectorAll('.shadow_target_group');
+            let seleccionados = [];
+            checkboxes.forEach(cb => {
+                if(cb.checked) seleccionados.push(cb.value);
+            });
+            localStorage.setItem('shadow_active_groups', JSON.stringify(seleccionados));
         }
 
         function escanearGruposNativos() {
@@ -272,11 +315,10 @@
             cambiarZonaGrupos();
         }
 
-        // Asistente de Guía de Luz Neón (Estilo Tron)
         function activarGuiaTron() {
             const streak = document.getElementById('laser-streak');
             streak.style.display = "block";
-            alert("🏍️ Estela Tron Iniciada: Sigue el rayo de luz neón.\n\nPaso 1: Introduce tu oferta en la columna izquierda e invoca la IA.\nPaso 2: Filtra tus grupos por colonia en la columna del medio.\nPaso 3: Activa el interruptor ShadowRadar y arranca el ecosistema masivo.");
+            alert("🏍️ Estela Tron Iniciada.\n\nPaso 1: Configura la oferta e invoca la IA.\nPaso 2: Filtra tus grupos por colonia.\nPaso 3: Arranca el ecosistema. El teléfono mantendrá la pantalla encendida para ráfagas inmediatas.");
             setTimeout(() => { streak.style.display = "none"; }, 8000);
         }
 
@@ -286,15 +328,22 @@
             
             localStorage.setItem('shadow_radar_active', document.getElementById('radar-toggle').checked);
             localStorage.setItem('shadow_bot_active', 'true');
-            alert("🔥 ¡Campaña Suprema ShadowPost Activada! Tus teléfonos están sincronizados, el algoritmo caótico de ráfagas e interrupciones por radar está operando de fondo.");
+            
+            // Disparar el candado de pantalla en el momento exacto del arranque masivo
+            solicitarWakeLock();
+            
+            alert("🔥 ¡Campaña Suprema ShadowPost Activada! Bloqueo de pantalla desactivado por software. Kiwi Browser procesará las ráfagas.");
         }
 
         function cerrarSesion() {
+            if (wakeLock !== null) {
+                wakeLock.release();
+                wakeLock = null;
+            }
             localStorage.clear();
             window.location.reload();
         }
 
-        // Auto-login por huella digital persistente
         if(localStorage.getItem('shadow_auth')) {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
