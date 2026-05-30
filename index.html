@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ShadowPost Pro — Sistema de Prospección</title>
+    <title>ShadowPost Pro — Programación Horaria + IA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -75,669 +75,114 @@
             text-align: center;
             margin-bottom: 1.75rem;
         }
+        .login-logo .icon { font-size: 2.5rem; display: block; margin-bottom: .5rem; filter: drop-shadow(0 0 12px var(--accent)); }
+        .login-logo h1 { font-family: 'Space Mono', monospace; font-size: 1.3rem; color: var(--accent); letter-spacing: .05em; text-shadow: 0 0 20px var(--accent-glow); }
+        .login-logo p { font-size: .7rem; color: var(--text-3); letter-spacing: .15em; text-transform: uppercase; margin-top: .25rem; }
 
-        .login-logo .icon {
-            font-size: 2.5rem;
-            display: block;
-            margin-bottom: .5rem;
-            filter: drop-shadow(0 0 12px var(--accent));
-        }
-
-        .login-logo h1 {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.3rem;
-            color: var(--accent);
-            letter-spacing: .05em;
-            text-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .login-logo p {
-            font-size: .7rem;
-            color: var(--text-3);
-            letter-spacing: .15em;
-            text-transform: uppercase;
-            margin-top: .25rem;
-        }
-
-        .field-label {
-            font-size: .7rem;
-            font-weight: 600;
-            color: var(--text-2);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            margin-bottom: .5rem;
-            display: block;
-        }
-
-        .field-input {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .8rem 1rem;
-            color: var(--text-1);
-            font-family: 'Space Mono', monospace;
-            font-size: .9rem;
-            text-align: center;
-            letter-spacing: .1em;
-            outline: none;
-            transition: border-color .2s, box-shadow .2s;
-        }
-
-        .field-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-
-        .btn-primary {
-            width: 100%;
-            background: var(--accent);
-            color: #080c10;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 700;
-            font-size: .9rem;
-            border: none;
-            border-radius: var(--radius-sm);
-            padding: .85rem;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: opacity .2s, transform .1s;
-            letter-spacing: .03em;
-        }
-
+        .field-label { font-size: .7rem; font-weight: 600; color: var(--text-2); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; display: block; }
+        .field-input { width: 100%; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem; color: var(--text-1); font-family: 'Space Mono', monospace; font-size: .9rem; text-align: center; outline: none; transition: border-color .2s, box-shadow .2s; }
+        .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+        .btn-primary { width: 100%; background: var(--accent); color: #080c10; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: .9rem; border: none; border-radius: var(--radius-sm); padding: .85rem; cursor: pointer; margin-top: 1rem; transition: opacity .2s, transform .1s; }
         .btn-primary:active { transform: scale(.98); opacity: .85; }
+        .login-error { color: var(--red); font-size: .75rem; text-align: center; margin-top: .75rem; display: none; }
+        .login-plan-info { margin-top: 1.25rem; background: var(--gold-dim); border: 1px solid rgba(240,165,0,.2); border-radius: var(--radius-sm); padding: .75rem 1rem; font-size: .72rem; color: var(--gold); text-align: center; line-height: 1.5; }
 
-        .login-error {
-            color: var(--red);
-            font-size: .75rem;
-            text-align: center;
-            margin-top: .75rem;
-            display: none;
-        }
+        #dashboard { display: none; min-height: 100vh; flex-direction: column; position: relative; z-index: 1; }
 
-        .login-plan-info {
-            margin-top: 1.25rem;
-            background: var(--gold-dim);
-            border: 1px solid rgba(240,165,0,.2);
-            border-radius: var(--radius-sm);
-            padding: .75rem 1rem;
-            font-size: .72rem;
-            color: var(--gold);
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        #dashboard {
-            display: none;
-            min-height: 100vh;
-            flex-direction: column;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(12px);
-        }
-
-        .header-brand h1 {
-            font-family: 'Space Mono', monospace;
-            font-size: .95rem;
-            color: var(--accent);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .header-brand p {
-            font-size: .65rem;
-            color: var(--text-3);
-            letter-spacing: .1em;
-            margin-top: .1rem;
-        }
-
+        .header { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); }
+        .header-brand h1 { font-family: 'Space Mono', monospace; font-size: .95rem; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+        .header-brand p { font-size: .65rem; color: var(--text-3); letter-spacing: .1em; margin-top: .1rem; }
         .header-actions { display: flex; gap: .5rem; align-items: center; }
-
-        .badge {
-            font-size: .65rem;
-            font-weight: 600;
-            font-family: 'Space Mono', monospace;
-            padding: .25rem .6rem;
-            border-radius: 20px;
-            letter-spacing: .05em;
-        }
-
+        .badge { font-size: .65rem; font-weight: 600; font-family: 'Space Mono', monospace; padding: .25rem .6rem; border-radius: 20px; letter-spacing: .05em; }
         .badge-admin { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(240,165,0,.25); }
         .badge-user  { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(0,212,170,.2); }
         .badge-wakelock { background: var(--bg-surface); color: var(--text-3); border: 1px solid var(--border); }
-
-        .btn-icon {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            color: var(--text-2);
-            border-radius: var(--radius-sm);
-            padding: .4rem .65rem;
-            font-size: .75rem;
-            cursor: pointer;
-            transition: all .15s;
-        }
-
+        .btn-icon { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-2); border-radius: var(--radius-sm); padding: .4rem .65rem; font-size: .75rem; cursor: pointer; transition: all .15s; }
         .btn-icon:hover { border-color: var(--border-lit); color: var(--text-1); }
         .btn-icon.danger { color: var(--red); border-color: rgba(248,81,73,.25); }
 
-        .progress-strip {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            padding: .6rem 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: .4rem;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: .68rem;
-            font-family: 'Space Mono', monospace;
-            color: var(--text-3);
-        }
-
+        .progress-strip { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: .6rem 1.25rem; display: flex; flex-direction: column; gap: .4rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: .68rem; font-family: 'Space Mono', monospace; color: var(--text-3); }
         .progress-info .group-name { color: var(--accent); font-weight: 700; }
         .progress-info .pct { color: var(--accent); }
+        .progress-track { height: 3px; background: var(--bg-surface); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 2px; transition: width .5s ease; }
 
-        .progress-track {
-            height: 3px;
-            background: var(--bg-surface);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--accent), var(--gold));
-            border-radius: 2px;
-            transition: width .5s ease;
-        }
-
-        .main-content {
-            padding: 1rem 1rem 6rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        @media (min-width: 900px) {
-            .main-content {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 1.25rem;
-                padding: 1.5rem 1.5rem 4rem;
-                align-items: start;
-            }
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.25rem;
-            transition: border-color .2s;
-        }
-
+        .main-content { padding: 1rem 1rem 6rem; display: flex; flex-direction: column; gap: 1rem; }
+        @media (min-width: 900px) { .main-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; padding: 1.5rem 1.5rem 4rem; align-items: start; } }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; transition: border-color .2s; }
         .card:hover { border-color: var(--border-lit); }
+        .card-title { font-size: .7rem; font-weight: 700; font-family: 'Space Mono', monospace; color: var(--text-2); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+        .card-title .num { background: var(--accent-dim); color: var(--accent); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: .65rem; }
 
-        .card-title {
-            font-size: .7rem;
-            font-weight: 700;
-            font-family: 'Space Mono', monospace;
-            color: var(--text-2);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
+        .textarea { width: 100%; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .75rem; color: var(--text-1); font-family: 'DM Sans', sans-serif; font-size: .85rem; line-height: 1.5; resize: vertical; outline: none; }
+        .textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
 
-        .card-title .num {
-            background: var(--accent-dim);
-            color: var(--accent);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .65rem;
-        }
-
-        .textarea {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .75rem;
-            color: var(--text-1);
-            font-family: 'DM Sans', sans-serif;
-            font-size: .85rem;
-            line-height: 1.5;
-            resize: vertical;
-            outline: none;
-            transition: border-color .2s, box-shadow .2s;
-        }
-
-        .textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-
-        .phones-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: .5rem;
-            margin-top: .75rem;
-        }
-
-        .phone-field {
-            position: relative;
-        }
-
-        .phone-label {
-            font-size: .6rem;
-            font-weight: 600;
-            color: var(--text-3);
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            margin-bottom: .3rem;
-            display: block;
-        }
-
-        .phone-input {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .6rem .75rem;
-            color: var(--accent);
-            font-family: 'Space Mono', monospace;
-            font-size: .78rem;
-            text-align: center;
-            outline: none;
-            transition: border-color .2s;
-        }
-
+        .phones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .75rem; }
+        .phone-field { position: relative; }
+        .phone-label { font-size: .6rem; font-weight: 600; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .3rem; display: block; }
+        .phone-input { width: 100%; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .6rem .75rem; color: var(--accent); font-family: 'Space Mono', monospace; font-size: .78rem; text-align: center; outline: none; }
         .phone-input:focus { border-color: var(--accent); }
-        .phone-input:disabled { opacity: .35; cursor: not-allowed; color: var(--text-3); }
-        .phone-input.gold { color: var(--gold); }
-        .phone-input.gold:focus { border-color: var(--gold); }
-
-        .btn-generate {
-            width: 100%;
-            background: var(--accent-dim);
-            border: 1px solid rgba(0,212,170,.35);
-            color: var(--accent);
-            font-weight: 700;
-            font-size: .85rem;
-            border-radius: var(--radius-sm);
-            padding: .8rem;
-            cursor: pointer;
-            margin-top: .75rem;
-            transition: all .2s;
-        }
-
+        .btn-generate { width: 100%; background: var(--accent-dim); border: 1px solid rgba(0,212,170,.35); color: var(--accent); font-weight: 700; font-size: .85rem; border-radius: var(--radius-sm); padding: .8rem; cursor: pointer; margin-top: .75rem; transition: all .2s; }
         .btn-generate:hover { background: rgba(0,212,170,.2); }
         .btn-generate:active { transform: scale(.98); }
-        .btn-generate:disabled { opacity: .5; cursor: not-allowed; }
 
         #ai-outputs { margin-top: .75rem; display: flex; flex-direction: column; gap: .5rem; }
+        .variation-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .75rem; font-size: .78rem; line-height: 1.6; color: var(--text-1); position: relative; }
+        .variation-num { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--accent); margin-bottom: .35rem; display: block; }
+        .btn-copy-var { position: absolute; top: .5rem; right: .5rem; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-3); font-size: .6rem; padding: .2rem .5rem; border-radius: 4px; cursor: pointer; }
 
-        .variation-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .75rem;
-            font-size: .78rem;
-            line-height: 1.6;
-            color: var(--text-1);
-            position: relative;
-        }
+        .sp-select { width: 100%; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .7rem .75rem; color: var(--text-1); font-family: 'DM Sans', sans-serif; font-size: .82rem; outline: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .75rem center; }
 
-        .variation-num {
-            font-family: 'Space Mono', monospace;
-            font-size: .6rem;
-            color: var(--accent);
-            margin-bottom: .35rem;
-            display: block;
-        }
-
-        .btn-copy-var {
-            position: absolute;
-            top: .5rem;
-            right: .5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            color: var(--text-3);
-            font-size: .6rem;
-            padding: .2rem .5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .btn-copy-var:hover { color: var(--accent); border-color: var(--accent); }
-
-        .sp-select {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .7rem .75rem;
-            color: var(--text-1);
-            font-family: 'DM Sans', sans-serif;
-            font-size: .82rem;
-            outline: none;
-            appearance: none;
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right .75rem center;
-        }
-
-        .groups-container {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--bg-deep);
-            margin-top: .5rem;
-        }
-
-        .group-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: .55rem .75rem;
-            border-bottom: 1px solid var(--border);
-            transition: all .25s;
-            cursor: pointer;
-        }
-
+        .groups-container { max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-deep); margin-top: .5rem; }
+        .group-row { display: flex; justify-content: space-between; align-items: center; padding: .55rem .75rem; border-bottom: 1px solid var(--border); transition: all .25s; cursor: pointer; }
         .group-row:last-child { border-bottom: none; }
         .group-row:hover { background: var(--bg-hover); }
-
-        .group-row.active {
-            background: rgba(0,212,170,.08);
-            border-left: 2px solid var(--accent);
-        }
-
-        .group-name-text {
-            font-size: .75rem;
-            color: var(--text-1);
-            font-family: 'Space Mono', monospace;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 75%;
-        }
-
+        .group-row.active { background: rgba(0,212,170,.08); border-left: 2px solid var(--accent); }
+        .group-name-text { font-size: .75rem; color: var(--text-1); font-family: 'Space Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 75%; }
         .group-row input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
 
-        .file-input-wrapper {
-            margin-top: .75rem;
-        }
+        .file-input-wrapper { margin-top: .75rem; }
+        .file-input-wrapper input[type="file"] { width: 100%; font-size: .75rem; color: var(--text-2); }
+        .gallery-thumbnails { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+        .thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; }
 
-        .file-input-wrapper input[type="file"] {
-            width: 100%;
-            font-size: .75rem;
-            color: var(--text-2);
-        }
-
-        .file-input-wrapper input[type="file"]::file-selector-button {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            color: var(--text-1);
-            padding: .4rem .8rem;
-            border-radius: 6px;
-            font-size: .75rem;
-            cursor: pointer;
-            margin-right: .5rem;
-        }
-
-        .motor-status-box {
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .85rem 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: .5rem;
-        }
-
-        .motor-stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: .75rem;
-        }
-
+        .motor-status-box { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .85rem 1rem; display: flex; flex-direction: column; gap: .5rem; }
+        .motor-stat { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; }
         .motor-stat .label { color: var(--text-3); font-family: 'Space Mono', monospace; font-size: .65rem; }
         .motor-stat .value { font-family: 'Space Mono', monospace; font-size: .72rem; }
-
         .status-paused  { color: var(--amber); }
         .status-running { color: var(--accent); }
-
-        .dot {
-            display: inline-block;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            margin-right: .4rem;
-            vertical-align: middle;
-        }
-
+        .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: .4rem; vertical-align: middle; }
         .dot.green { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 1.5s infinite; }
         .dot.amber { background: var(--amber); }
-        .dot.red   { background: var(--red); }
-
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-        .control-row {
-            display: grid;
-            grid-template-columns: auto 1fr 1fr auto;
-            gap: .4rem;
-            margin-top: .75rem;
-            align-items: stretch;
-        }
+        .control-row { display: grid; grid-template-columns: auto 1fr 1fr auto; gap: .4rem; margin-top: .75rem; align-items: stretch; }
+        .btn-skip { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-2); border-radius: var(--radius-sm); padding: .7rem .75rem; font-size: .75rem; cursor: pointer; }
+        .btn-play { background: linear-gradient(135deg, var(--accent), #00b894); border: none; color: #080c10; font-weight: 700; font-size: .78rem; border-radius: var(--radius-sm); padding: .7rem; cursor: pointer; }
+        .btn-pause-ctrl { background: rgba(227,179,65,.1); border: 1px solid rgba(227,179,65,.3); color: var(--amber); font-weight: 700; font-size: .78rem; border-radius: var(--radius-sm); padding: .7rem; cursor: pointer; display: none; }
 
-        .btn-skip {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            color: var(--text-2);
-            border-radius: var(--radius-sm);
-            padding: .7rem .75rem;
-            font-size: .75rem;
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .btn-skip:hover { border-color: var(--border-lit); color: var(--text-1); }
-
-        .btn-play {
-            background: linear-gradient(135deg, var(--accent), #00b894);
-            border: none;
-            color: #080c10;
-            font-weight: 700;
-            font-size: .78rem;
-            border-radius: var(--radius-sm);
-            padding: .7rem;
-            cursor: pointer;
-            transition: opacity .2s, transform .1s;
-            letter-spacing: .03em;
-        }
-
-        .btn-play:active { transform: scale(.97); opacity: .85; }
-
-        .btn-pause-ctrl {
-            background: rgba(227,179,65,.1);
-            border: 1px solid rgba(227,179,65,.3);
-            color: var(--amber);
-            font-weight: 700;
-            font-size: .78rem;
-            border-radius: var(--radius-sm);
-            padding: .7rem;
-            cursor: pointer;
-            display: none;
-        }
-
-        .logs-box {
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .6rem .75rem;
-            height: 110px;
-            overflow-y: auto;
-            margin-top: .6rem;
-            font-family: 'Space Mono', monospace;
-            font-size: .65rem;
-            color: var(--text-3);
-            line-height: 1.7;
-        }
-
+        .logs-box { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .6rem .75rem; height: 110px; overflow-y: auto; margin-top: .6rem; font-family: 'Space Mono', monospace; font-size: .65rem; color: var(--text-3); line-height: 1.7; }
         .log-success { color: var(--accent); }
         .log-info    { color: #6ab0f5; }
         .log-warn    { color: var(--amber); }
         .log-error   { color: var(--red); }
 
-        #admin-panel {
-            display: none;
-            background: var(--bg-card);
-            border: 1px solid rgba(240,165,0,.25);
-            border-radius: 16px;
-            padding: 1.25rem;
-        }
+        #admin-panel { display: none; background: var(--bg-card); border: 1px solid rgba(240,165,0,.25); border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+        .admin-title { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--gold); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+        .key-generator { display: flex; gap: .5rem; margin-bottom: .75rem; }
+        .key-gen-input { flex: 1; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .6rem .75rem; color: var(--gold); font-family: 'Space Mono', monospace; font-size: .75rem; }
+        .btn-gen-key { background: var(--gold-dim); border: 1px solid rgba(240,165,0,.3); color: var(--gold); font-weight: 700; font-size: .75rem; padding: .6rem .9rem; border-radius: var(--radius-sm); cursor: pointer; }
+        .keys-table { width: 100%; border-collapse: collapse; font-size: .7rem; }
+        .keys-table th { text-align: left; color: var(--text-3); font-family: 'Space Mono', monospace; font-size: .6rem; padding: .4rem .5rem; border-bottom: 1px solid var(--border); }
+        .keys-table td { padding: .5rem; border-bottom: 1px solid var(--border); color: var(--text-1); }
+        .btn-revoke { background: none; border: 1px solid rgba(248,81,73,.3); color: var(--red); font-size: .6rem; padding: .2rem .45rem; border-radius: 4px; cursor: pointer; }
 
-        .admin-title {
-            font-family: 'Space Mono', monospace;
-            font-size: .7rem;
-            color: var(--gold);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
-
-        .key-generator {
-            display: flex;
-            gap: .5rem;
-            margin-bottom: .75rem;
-        }
-
-        .key-gen-input {
-            flex: 1;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .6rem .75rem;
-            color: var(--gold);
-            font-family: 'Space Mono', monospace;
-            font-size: .75rem;
-            outline: none;
-        }
-
-        .btn-gen-key {
-            background: var(--gold-dim);
-            border: 1px solid rgba(240,165,0,.3);
-            color: var(--gold);
-            font-weight: 700;
-            font-size: .75rem;
-            padding: .6rem .9rem;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .keys-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: .7rem;
-        }
-
-        .keys-table th {
-            text-align: left;
-            color: var(--text-3);
-            font-family: 'Space Mono', monospace;
-            font-size: .6rem;
-            letter-spacing: .08em;
-            padding: .4rem .5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .keys-table td {
-            padding: .5rem;
-            border-bottom: 1px solid var(--border);
-            font-family: 'Space Mono', monospace;
-            font-size: .65rem;
-            color: var(--text-1);
-        }
-
-        .keys-table td.key-val { color: var(--accent); }
-        .keys-table td.key-exp { color: var(--amber); }
-        .keys-table td.key-exp.expired { color: var(--red); }
-
-        .btn-revoke {
-            background: none;
-            border: 1px solid rgba(248,81,73,.3);
-            color: var(--red);
-            font-size: .6rem;
-            padding: .2rem .45rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #flyer-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.85);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
+        #flyer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
         #flyer-modal.open { display: flex; }
-
-        #flyer-modal img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: var(--radius);
-            object-fit: contain;
-        }
-
-        #flyer-modal .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            color: var(--text-1);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+        #flyer-modal img { max-width: 100%; max-height: 90vh; border-radius: var(--radius); }
+        #flyer-modal .close-modal { position: absolute; top: 1rem; right: 1rem; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-1); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -746,28 +191,8 @@
         .hidden { display: none !important; }
         .mt-1 { margin-top: .5rem; }
         .mt-2 { margin-top: .75rem; }
-        .divider { border: none; border-top: 1px solid var(--border); margin: .75rem 0; }
-
-        #toast {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: var(--bg-surface);
-            border: 1px solid var(--border-lit);
-            color: var(--text-1);
-            padding: .65rem 1.25rem;
-            border-radius: 30px;
-            font-size: .78rem;
-            font-weight: 500;
-            z-index: 999;
-            transition: transform .3s ease;
-            white-space: nowrap;
-            box-shadow: 0 8px 32px rgba(0,0,0,.4);
-        }
-
+        #toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--bg-surface); border: 1px solid var(--border-lit); color: var(--text-1); padding: .65rem 1.25rem; border-radius: 30px; font-size: .78rem; z-index: 999; transition: transform .3s ease; white-space: nowrap; }
         #toast.show { transform: translateX(-50%) translateY(0); }
-
         .eq-wrap { display: none; align-items: flex-end; gap: 2px; height: 14px; }
         .eq-wrap.active { display: flex; }
         .eq-bar-a { width: 3px; border-radius: 2px; background: var(--accent); animation: eqA .7s ease infinite; }
@@ -775,117 +200,53 @@
         .eq-bar-a:nth-child(2){ animation-delay:.2s }
         .eq-bar-a:nth-child(3){ animation-delay:.1s }
         @keyframes eqA { 0%,100%{height:3px} 50%{height:14px} }
-
-        /* Estilos para la guía neon (resaltado) */
-        .neon-guide-highlight {
-            outline: 2px solid var(--gold);
-            box-shadow: 0 0 12px var(--gold), 0 0 8px var(--accent);
-            transition: all 0.2s ease;
-            animation: neonPulse 1.2s infinite;
-        }
-        @keyframes neonPulse {
-            0% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
-            50% { outline-color: var(--accent); box-shadow: 0 0 20px var(--accent), 0 0 8px var(--gold); }
-            100% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
-        }
-        /* Panel manual offline */
-        .manual-panel {
-            margin-top: 1rem;
-            border-top: 1px solid var(--border);
-            padding-top: 0.75rem;
-        }
-        .manual-panel summary {
-            font-size: 0.7rem;
-            color: var(--text-2);
-            cursor: pointer;
-            font-family: 'Space Mono', monospace;
-        }
-        .manual-textarea {
-            width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 0.5rem;
-            color: var(--text-1);
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .gallery-thumbnails {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .thumb {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
+        @keyframes neonPulse { 0% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); } 50% { outline-color: var(--accent); box-shadow: 0 0 20px var(--accent); } 100% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); } }
+        .neon-guide-highlight { outline: 2px solid var(--gold); box-shadow: 0 0 12px var(--gold); animation: neonPulse 1.2s infinite; transition: all 0.2s ease; }
+        .schedule-panel { background: var(--bg-surface); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.75rem; }
+        .schedule-item { margin-bottom: 0.75rem; border-left: 2px solid var(--accent); padding-left: 0.5rem; }
+        .schedule-time { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin: 0.25rem 0; }
+        .schedule-time input { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.3rem 0.5rem; color: var(--text-1); font-family: 'Space Mono', monospace; width: 80px; text-align: center; }
+        .schedule-groups { font-size: 0.7rem; color: var(--text-2); margin-top: 0.25rem; }
+        .manual-panel { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+        .manual-panel summary { font-size: 0.7rem; color: var(--text-2); cursor: pointer; }
+        .manual-textarea { width: 100%; background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem; color: var(--text-1); font-size: 0.75rem; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
     <div class="login-card">
-        <div class="login-logo">
-            <span class="icon">🥷</span>
-            <h1>SHADOWPOST PRO</h1>
-            <p>Sistema de Prospección Digital v4</p>
-        </div>
+        <div class="login-logo"><span class="icon">🥷</span><h1>SHADOWPOST PRO</h1><p>Sistema de Prospección Digital v4</p></div>
         <label class="field-label">Clave de Acceso</label>
         <input type="password" id="access-key" class="field-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') verificarAcceso()">
         <button class="btn-primary" onclick="verificarAcceso()">Iniciar Sesión</button>
         <p id="login-error" class="login-error">⚠ Clave inválida o licencia vencida.</p>
-        <div class="login-plan-info">¿Necesitas acceso? Contacta al administrador<br>para obtener tu clave de licencia mensual.</div>
+        <div class="login-plan-info">¿Necesitas acceso? Contacta al administrador</div>
     </div>
 </div>
 
-<!-- MODAL FLYER -->
-<div id="flyer-modal" onclick="cerrarFlyerModal()">
-    <span class="close-modal">✕</span>
-    <img id="flyer-img" src="" alt="Flyer">
-</div>
+<div id="flyer-modal" onclick="cerrarFlyerModal()"><span class="close-modal">✕</span><img id="flyer-img" src=""></div>
 
-<!-- DASHBOARD -->
 <div id="dashboard">
     <header class="header">
-        <div class="header-brand">
-            <h1>SHADOWPOST PRO</h1>
-            <p id="header-sub">ID: <span id="device-id" style="color:var(--text-2)"></span></p>
-        </div>
-        <div class="header-actions">
-            <span id="role-badge" class="badge badge-user">USUARIO</span>
-            <span id="wakelock-badge" class="badge badge-wakelock">🔒</span>
-            <button class="btn-icon danger" onclick="cerrarSesion()">Salir</button>
-        </div>
+        <div class="header-brand"><h1>SHADOWPOST PRO</h1><p>ID: <span id="device-id"></span></p></div>
+        <div class="header-actions"><span id="role-badge" class="badge badge-user">USUARIO</span><span id="wakelock-badge" class="badge badge-wakelock">🔒</span><button class="btn-icon danger" onclick="cerrarSesion()">Salir</button></div>
     </header>
 
     <div class="progress-strip">
-        <div class="progress-info">
-            <span>▶ <span id="track-name" class="group-name">Sin grupos</span></span>
-            <span id="track-pct" class="pct">0%</span>
-        </div>
-        <div class="progress-track">
-            <div id="progress-fill" class="progress-fill"></div>
-        </div>
+        <div class="progress-info"><span>▶ <span id="track-name" class="group-name">Sin grupos</span></span><span id="track-pct" class="pct">0%</span></div>
+        <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
     </div>
 
     <div class="main-content">
-        <!-- CARD 1: IA -->
+        <!-- CARD IA -->
         <div class="card">
             <div class="card-title"><span class="num">1</span> IA Neuroventas</div>
-            <label class="field-label mt-1">Oferta base</label>
-            <textarea id="base-prompt" class="textarea" rows="4" placeholder="Ej: Internet Megacable 100 Megas, TV, llamadas ilimitadas, $349/mes, instalación gratis..."></textarea>
+            <textarea id="base-prompt" class="textarea" rows="3" placeholder="Ej: Internet Megacable 100 Megas, TV, llamadas ilimitadas, $349/mes..."></textarea>
             <div id="phones-grid" class="phones-grid"></div>
             <button id="btn-generate" class="btn-generate" onclick="generarVariacionesIA()">✦ Generar con IA</button>
             <div id="ai-outputs"></div>
-            <!-- MODO MANUAL OFFLINE -->
-            <details class="manual-panel">
-                <summary>✏️ Modo manual (sin IA) - Escribe tus 3 variaciones</summary>
+            <details class="manual-panel"><summary>✏️ Modo manual (sin IA) - Escribe tus 3 variaciones</summary>
                 <textarea id="manual-var-1" class="manual-textarea" rows="2" placeholder="Variación 1: Oferta con WhatsApp..."></textarea>
                 <textarea id="manual-var-2" class="manual-textarea" rows="2" placeholder="Variación 2: Oferta con imagen..."></textarea>
                 <textarea id="manual-var-3" class="manual-textarea" rows="2" placeholder="Variación 3: Llamada a la acción..."></textarea>
@@ -893,37 +254,38 @@
             </details>
         </div>
 
-        <!-- CARD 2: GRUPOS + IMÁGENES -->
+        <!-- CARD GRUPOS Y HORARIOS -->
         <div class="card">
-            <div class="card-title"><span class="num">2</span> Rutas Geográficas</div>
+            <div class="card-title"><span class="num">2</span> Rutas Geográficas & Programación</div>
             <select id="zona-select" class="sp-select" onchange="cambiarZona()">
                 <option value="all">Todos los grupos</option>
-                <option value="manana">Ruta Mañana (Sta. Bárbara)</option>
-                <option value="tarde">Ruta Mediodía (San Miguel / Calesa)</option>
-                <option value="premium">Ruta Premium (Juriquilla)</option>
+                <option value="manana">Horario Mañana (5:30-7:00)</option>
+                <option value="tarde">Horario Mediodía (13:00-14:30)</option>
+                <option value="premium">Horario Noche (19:00-22:00)</option>
             </select>
             <div id="groups-container" class="groups-container mt-1"></div>
+
+            <div class="schedule-panel">
+                <div class="card-title" style="margin-bottom:0.5rem;">⏰ Programación horaria automática</div>
+                <div id="schedule-list"></div>
+                <button class="btn-generate" style="margin-top:0.5rem;" onclick="guardarHorarios()">Guardar horarios</button>
+                <p class="log-info" style="font-size:0.6rem; margin-top:0.3rem;">* La revisión ocurre cada minuto. Mantén esta pestaña abierta.</p>
+            </div>
+
             <div class="file-input-wrapper mt-2">
                 <label class="field-label">Galería multimedia (elige varias imágenes)</label>
                 <input type="file" id="gallery-input" multiple accept="image/*" onchange="onGaleriaCargada()">
                 <div id="gallery-preview" class="gallery-thumbnails"></div>
             </div>
-            <div id="flyer-preview-row" class="hidden mt-1" style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
-                <span style="font-size:.7rem;color:var(--text-3)">Imágenes listas</span>
-                <button class="btn-icon" onclick="verFlyerActual()">Ver imagen aleatoria</button>
-            </div>
         </div>
 
-        <!-- CARD 3: CONTROL -->
+        <!-- CARD CONTROL -->
         <div class="card">
-            <div class="card-title" style="justify-content:space-between;">
-                <span style="display:flex;align-items:center;gap:.5rem;"><span class="num">3</span> Control de Motor</span>
-                <div id="eq-anim" class="eq-wrap"><div class="eq-bar-a"></div><div class="eq-bar-a"></div><div class="eq-bar-a"></div></div>
-            </div>
+            <div class="card-title" style="justify-content:space-between;"><span><span class="num">3</span> Control de Motor</span><div id="eq-anim" class="eq-wrap"><div class="eq-bar-a"></div><div class="eq-bar-a"></div><div class="eq-bar-a"></div></div></div>
             <div class="motor-status-box">
                 <div class="motor-stat"><span class="label">ESTADO</span><span id="motor-status" class="value status-paused"><span class="dot amber"></span>EN PAUSA</span></div>
                 <div class="motor-stat"><span class="label">POSICIÓN</span><span class="value"><span id="cur-idx">0</span> / <span id="tot-idx">0</span></span></div>
-                <div class="motor-stat"><span class="label">WAKELOCK</span><span id="wl-status-text" class="value" style="color:var(--text-3)">Inactivo</span></div>
+                <div class="motor-stat"><span class="label">WAKELOCK</span><span id="wl-status-text" class="value">Inactivo</span></div>
             </div>
             <div class="control-row">
                 <button class="btn-skip" onclick="saltarGrupo(-1)">⏮</button>
@@ -934,21 +296,12 @@
             <div id="system-logs" class="logs-box"><span class="log-info">> Consola de telemetría lista...</span><br></div>
         </div>
 
-        <!-- CARD 4: ADMIN -->
+        <!-- ADMIN PANEL -->
         <div id="admin-panel">
             <div class="admin-title">⚙ Panel Administrador</div>
-            <label class="field-label">Generar clave de cliente</label>
-            <div class="key-generator">
-                <input type="text" id="client-name-input" class="key-gen-input" placeholder="Nombre del cliente...">
-                <button class="btn-gen-key" onclick="generarClaveCliente()">+ Generar</button>
-            </div>
-            <div style="overflow-x:auto;">
-                <table class="keys-table" id="keys-table">
-                    <thead><tr><th>CLIENTE</th><th>CLAVE</th><th>VENCE</th><th>NUMS</th><th></th></tr></thead>
-                    <tbody id="keys-tbody"></tbody>
-                </table>
-            </div>
-            <p style="font-size:.62rem;color:var(--text-3);margin-top:.75rem;">Las claves se generan localmente. Están encriptadas y son únicas por cliente. Compártelas manualmente.</p>
+            <div class="key-generator"><input type="text" id="client-name-input" class="key-gen-input" placeholder="Nombre del cliente..."><button class="btn-gen-key" onclick="generarClaveCliente()">+ Generar</button></div>
+            <div style="overflow-x:auto;"><table class="keys-table" id="keys-table"><thead><tr><th>CLIENTE</th><th>CLAVE</th><th>VENCE</th><th>NUMS</th><th></th></tr></thead><tbody id="keys-tbody"></tbody></table></div>
+            <p class="log-info" style="font-size:0.6rem;">Claves locales encriptadas. Compártelas manualmente.</p>
         </div>
     </div>
 </div>
@@ -956,45 +309,64 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════════
-// SHADOWPOST PRO v4 — SCRIPT COMPLETO (CON GUÍA NEON + MODO MANUAL + MÚLTIPLES IMÁGENES)
+// SHADOWPOST PRO v5.0 - CON PROGRAMACIÓN HORARIA AUTOMÁTICA (3 franjas editables)
 // ═══════════════════════════════════════════════════════════════════════════
 
-// ── CONFIG ──────────────────────────────────────────────────────────────────
+// ---------- CONFIG ----------
 const ADMIN_KEY = "celides13";
 const LEGACY_KEY = "celides10";
-const PLAN_ADMIN = { telefonos: 4, label: "ADMIN" };
 
-let currentRole   = null;
-let currentPlan   = null;
-let currentIndex  = 0;
+let currentRole = null;
+let currentPlan = { telefonos: 4 };
+let currentIndex = 0;
 let motorInterval = null;
-let wakeLock      = null;
-let clientKeys    = {};
+let wakeLock = null;
+let clientKeys = {};
 let pollingInterval = null;
+let schedulerInterval = null;  // Para revisar horarios cada minuto
 
-// Grupos base
-const baseGrupos = {
-    manana: [
-        { name: "Ventas La Estancia",   url: "https://m.facebook.com/groups/estancia" },
-        { name: "Bazar Santa Bárbara",  url: "https://m.facebook.com/groups/santa_barbara" },
-        { name: "Vecinos Sta Bárbara",  url: "https://m.facebook.com/groups/vecinos_stb" },
-        { name: "Ofertas Querétaro QRO",url: "https://m.facebook.com/groups/ofertas_qro" }
-    ],
-    tarde: [
-        { name: "Comercio Paseos San Miguel", url: "https://m.facebook.com/groups/paseos" },
-        { name: "Vecinos Calesa",             url: "https://m.facebook.com/groups/calesa" },
-        { name: "Anuncios San Miguel QRO",    url: "https://m.facebook.com/groups/sanmiguel_qro" },
-        { name: "Mercado Corregidora",        url: "https://m.facebook.com/groups/corregidora" }
-    ],
-    premium: [
-        { name: "Juriquilla Compra y Venta",  url: "https://m.facebook.com/groups/juriquilla" },
-        { name: "Juriquilla Vecinos",         url: "https://m.facebook.com/groups/juriquilla2" },
-        { name: "El Refugio Ofertas",         url: "https://m.facebook.com/groups/el_refugio" },
-        { name: "Zibata Anuncios",            url: "https://m.facebook.com/groups/zibata" }
-    ]
+// Grupos base separados por horario (se pueden editar desde el panel)
+let gruposPorHorario = {
+    manana: {   // 5:30-7:00
+        name: "Madrugadores (5:30-7:00)",
+        start: "05:30",
+        end: "07:00",
+        enabled: true,
+        groups: [
+            { name: "Ventas La Estancia", url: "https://m.facebook.com/groups/estancia" },
+            { name: "Bazar Santa Bárbara", url: "https://m.facebook.com/groups/santa_barbara" },
+            { name: "Vecinos Sta Bárbara", url: "https://m.facebook.com/groups/vecinos_stb" }
+        ]
+    },
+    tarde: {    // 13:00-14:30
+        name: "Mediodía (13:00-14:30)",
+        start: "13:00",
+        end: "14:30",
+        enabled: true,
+        groups: [
+            { name: "Ofertas Querétaro QRO", url: "https://m.facebook.com/groups/ofertas_qro" },
+            { name: "Comercio Paseos San Miguel", url: "https://m.facebook.com/groups/paseos" },
+            { name: "Mercado Corregidora", url: "https://m.facebook.com/groups/corregidora" }
+        ]
+    },
+    noche: {    // 19:00-22:00
+        name: "Noche (19:00-22:00)",
+        start: "19:00",
+        end: "22:00",
+        enabled: true,
+        groups: [
+            { name: "Juriquilla Compra y Venta", url: "https://m.facebook.com/groups/juriquilla" },
+            { name: "Juriquilla Vecinos", url: "https://m.facebook.com/groups/juriquilla2" },
+            { name: "El Refugio Ofertas", url: "https://m.facebook.com/groups/el_refugio" },
+            { name: "Zibata Anuncios", url: "https://m.facebook.com/groups/zibata" }
+        ]
+    }
 };
 
-// ── UTILIDADES ──────────────────────────────────────────────────────────────
+// Clave para guardar horarios
+const HORARIOS_STORAGE_KEY = 'sp_horarios';
+
+// ---------- UTILIDADES ----------
 function toast(msg, dur=2500) {
     const el = document.getElementById('toast');
     el.textContent = msg;
@@ -1009,238 +381,198 @@ function log(msg, cls='') {
     box.scrollTop = box.scrollHeight;
 }
 
-function obtenerHuella() {
-    return btoa(navigator.userAgent).substring(8, 20).toLowerCase();
-}
+function obtenerHuella() { return btoa(navigator.userAgent).substring(8,20).toLowerCase(); }
 
-// ── SISTEMA DE CLAVES ──────────────────────────────────────────────────────
+// ---------- SISTEMA DE LICENCIA ----------
 function generarClave(nombre) {
     const ahora = new Date();
-    const mes   = String(ahora.getMonth() + 1).padStart(2,'0');
-    const anio  = String(ahora.getFullYear()).slice(-2);
+    const mes = String(ahora.getMonth()+1).padStart(2,'0');
+    const anio = String(ahora.getFullYear()).slice(-2);
     let hash = 0;
-    for (let i = 0; i < nombre.length; i++) hash = ((hash << 5) - hash + nombre.charCodeAt(i)) & 0xffffffff;
+    for (let i=0; i<nombre.length; i++) hash = ((hash<<5)-hash+nombre.charCodeAt(i))&0xffffffff;
     const hashStr = Math.abs(hash).toString(36).toUpperCase().padStart(4,'0').slice(0,4);
     return `SP-${hashStr}${mes}${anio}`;
 }
 
 function verificarClave(clave) {
     if (!clave) return null;
-    if (clave === ADMIN_KEY || clave === LEGACY_KEY) return { role: 'admin', telefonos: 4 };
+    if (clave===ADMIN_KEY || clave===LEGACY_KEY) return { role:'admin', telefonos:4 };
     const match = clave.match(/^SP-([A-Z0-9]{4})(\d{2})(\d{2})$/);
     if (!match) return null;
     const mesClave = parseInt(match[2]), anioClave = parseInt('20'+match[3]);
     const ahora = new Date();
     const mesActual = ahora.getMonth()+1, anioActual = ahora.getFullYear();
-    const claveValida = (anioClave === anioActual && mesClave === mesActual) ||
-                        (anioClave === anioActual && mesClave === mesActual-1) ||
-                        (anioActual === anioClave+1 && mesClave === 12 && mesActual === 1);
-    if (!claveValida) return null;
+    const valida = (anioClave===anioActual && mesClave===mesActual) ||
+                   (anioClave===anioActual && mesClave===mesActual-1) ||
+                   (anioActual===anioClave+1 && mesClave===12 && mesActual===1);
+    if (!valida) return null;
     const datos = clientKeys[clave];
-    return { role: 'client', telefonos: datos ? datos.telefonos : 1 };
+    return { role:'client', telefonos: datos ? datos.telefonos : 1 };
 }
 
-// ── LOGIN ───────────────────────────────────────────────────────────────────
+// ---------- LOGIN ----------
 function verificarAcceso() {
     const clave = document.getElementById('access-key').value.trim();
     const resultado = verificarClave(clave);
-    if (!resultado) { document.getElementById('login-error').style.display = 'block'; return; }
+    if (!resultado) { document.getElementById('login-error').style.display='block'; return; }
     currentRole = resultado.role;
     currentPlan = { telefonos: resultado.telefonos };
     localStorage.setItem('sp_auth', clave);
     localStorage.setItem('sp_role', resultado.role);
     currentIndex = parseInt(localStorage.getItem('sp_idx') || '0');
-    clientKeys   = JSON.parse(localStorage.getItem('sp_keys') || '{}');
+    clientKeys = JSON.parse(localStorage.getItem('sp_keys') || '{}');
+    cargarHorariosGuardados();   // Cargar configuración de horarios
     iniciarDashboard();
 }
 
 function iniciarDashboard() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'flex';
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('dashboard').style.display='flex';
     document.getElementById('device-id').textContent = obtenerHuella();
-    const badge = document.getElementById('role-badge');
     if (currentRole === 'admin') {
-        badge.textContent = '⚙ ADMIN';
-        badge.className = 'badge badge-admin';
+        document.getElementById('role-badge').textContent = '⚙ ADMIN';
+        document.getElementById('role-badge').className = 'badge badge-admin';
         document.getElementById('admin-panel').style.display = 'block';
         renderizarTablaClaves();
     } else {
-        badge.textContent = '✦ ACTIVO';
-        badge.className = 'badge badge-user';
+        document.getElementById('role-badge').textContent = '✦ ACTIVO';
+        document.getElementById('role-badge').className = 'badge badge-user';
     }
     renderizarTelefonos();
-    cargarGaleriaDesdeStorage();  // mostrar miniaturas guardadas
-    cambiarZona();
+    cargarGaleriaDesdeStorage();
+    renderizarHorariosEnUI();   // Mostrar los horarios en el panel
+    cambiarZona();              // Muestra grupos según la zona seleccionada
+    iniciarScheduler();         // Arranca el reloj que revisa horarios cada minuto
 }
 
-// ── TELÉFONOS ──────────────────────────────────────────────────────────────
+// ---------- TELÉFONOS ----------
 function renderizarTelefonos() {
     const grid = document.getElementById('phones-grid');
     const total = currentPlan.telefonos;
     const saved = JSON.parse(localStorage.getItem('sp_phones') || '[]');
     grid.innerHTML = '';
-    for (let i = 0; i < total; i++) {
-        const col = i % 2 === 0 ? 'var(--accent)' : 'var(--gold)';
+    for (let i=0; i<total; i++) {
+        const col = i%2===0 ? 'var(--accent)' : 'var(--gold)';
         const val = saved[i] || '';
         grid.innerHTML += `<div class="phone-field"><span class="phone-label">WhatsApp ${i+1}</span><input type="tel" id="tel-${i}" class="phone-input" style="color:${col}" placeholder="52442XXXXXXX" value="${val}" onchange="guardarTelefonos()"></div>`;
     }
-    grid.style.display = total >= 1 ? 'grid' : 'none';
-    grid.style.gridTemplateColumns = total === 1 ? '1fr' : '1fr 1fr';
+    grid.style.display = total>=1 ? 'grid' : 'none';
+    grid.style.gridTemplateColumns = total===1 ? '1fr' : '1fr 1fr';
 }
-
 function guardarTelefonos() {
     const total = currentPlan.telefonos;
     const phones = [];
-    for (let i = 0; i < total; i++) {
-        const el = document.getElementById(`tel-${i}`);
-        phones.push(el ? el.value.trim() : '');
-    }
+    for (let i=0; i<total; i++) { const el = document.getElementById(`tel-${i}`); phones.push(el ? el.value.trim() : ''); }
     localStorage.setItem('sp_phones', JSON.stringify(phones));
 }
-
 function obtenerTelefonos() {
     const total = currentPlan.telefonos;
     const phones = [];
-    for (let i = 0; i < total; i++) {
-        const el = document.getElementById(`tel-${i}`);
-        if (el && el.value.trim()) phones.push(el.value.trim());
-    }
+    for (let i=0; i<total; i++) { const el = document.getElementById(`tel-${i}`); if(el && el.value.trim()) phones.push(el.value.trim()); }
     return phones;
 }
 
-// ── GENERACIÓN IA + MODO MANUAL ─────────────────────────────────────────────
+// ---------- IA + MANUAL ----------
 async function generarVariacionesIA() {
     const idea = document.getElementById('base-prompt').value.trim();
-    if (!idea) { toast('Escribe tu oferta base primero.'); return; }
+    if (!idea) { toast('Escribe oferta base.'); return; }
     const telefonos = obtenerTelefonos();
-    if (telefonos.length === 0) { toast('Agrega al menos un número de WhatsApp.'); return; }
+    if (!telefonos.length) { toast('Agrega al menos un WhatsApp.'); return; }
     const out = document.getElementById('ai-outputs');
     const btn = document.getElementById('btn-generate');
-    out.innerHTML = `<div style="font-size:.75rem;color:var(--accent);">▌ Invocando IA ShadowPost...</div>`;
+    out.innerHTML = '<div style="font-size:.75rem;color:var(--accent);">▌ Invocando IA...</div>';
     btn.disabled = true;
     try {
         const res = await fetch('/api/generate-variations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method:'POST', headers:{'Content-Type':'application/json'},
             body: JSON.stringify({ idea, telefonos })
         });
-        if (!res.ok) throw new Error('Error del servidor IA');
+        if(!res.ok) throw new Error('Error IA');
         const data = await res.json();
         const variaciones = data.variaciones || [];
-        if (variaciones.length === 0) throw new Error('La IA no devolvió variaciones.');
+        if(!variaciones.length) throw new Error('Sin variaciones');
         mostrarVariaciones(variaciones);
         localStorage.setItem('sp_copies', JSON.stringify(variaciones));
-        toast('✦ 3 variaciones generadas por IA');
-    } catch (err) {
+        toast('✦ Variaciones generadas');
+    } catch(err) {
         out.innerHTML = `<div style="font-size:.75rem;color:var(--red);">⚠ ${err.message}. Usa modo manual.</div>`;
         log(`Error IA: ${err.message}`, 'log-error');
-    } finally {
-        btn.disabled = false;
-    }
+    } finally { btn.disabled = false; }
 }
 
 function guardarVariacionesManuales() {
     const v1 = document.getElementById('manual-var-1').value.trim();
     const v2 = document.getElementById('manual-var-2').value.trim();
     const v3 = document.getElementById('manual-var-3').value.trim();
-    if (!v1 || !v2 || !v3) { toast('Completa las 3 variaciones manuales'); return; }
-    const variaciones = [v1, v2, v3];
+    if(!v1||!v2||!v3) { toast('Completa las 3 variaciones'); return; }
+    const variaciones = [v1,v2,v3];
     mostrarVariaciones(variaciones);
     localStorage.setItem('sp_copies', JSON.stringify(variaciones));
-    toast('✅ Variaciones manuales guardadas');
-    log('Modo manual: 3 variaciones almacenadas', 'log-success');
+    toast('✅ Manuales guardadas');
 }
 
 function mostrarVariaciones(variaciones) {
     const out = document.getElementById('ai-outputs');
     out.innerHTML = '';
-    variaciones.forEach((v, i) => {
-        out.innerHTML += `
-        <div class="variation-card">
-            <span class="variation-num">VARIACIÓN ${i+1}</span>
-            <button class="btn-copy-var" onclick="copiarVariacion(${i})">Copiar</button>
-            <div id="var-text-${i}">${escapeHtml(v)}</div>
-        </div>`;
+    variaciones.forEach((v,i) => {
+        out.innerHTML += `<div class="variation-card"><span class="variation-num">VARIACIÓN ${i+1}</span><button class="btn-copy-var" onclick="copiarVariacion(${i})">Copiar</button><div id="var-text-${i}">${escapeHtml(v)}</div></div>`;
     });
 }
+function escapeHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+async function copiarVariacion(idx) { const el=document.getElementById(`var-text-${idx}`); if(!el) return; try{ await navigator.clipboard.writeText(el.innerText); toast('✓ Copiado'); } catch{ toast('Selecciona manual'); } }
 
-function escapeHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-}
-
-async function copiarVariacion(idx) {
-    const el = document.getElementById(`var-text-${idx}`);
-    if (!el) return;
-    try { await navigator.clipboard.writeText(el.innerText); toast('✓ Copiado'); } catch { toast('Selecciona manualmente'); }
-}
-
-// ── MÚLTIPLES IMÁGENES (Galería) ───────────────────────────────────────────
+// ---------- GALERÍA ----------
 function onGaleriaCargada() {
     const input = document.getElementById('gallery-input');
-    if (!input.files.length) return;
+    if(!input.files.length) return;
     const filesArray = Array.from(input.files);
     const imagesData = [];
-    let processed = 0;
-    filesArray.forEach(file => {
+    let processed=0;
+    filesArray.forEach(file=>{
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (e)=>{
             imagesData.push({ name: file.name, dataURL: e.target.result });
             processed++;
-            if (processed === filesArray.length) {
+            if(processed===filesArray.length) {
                 localStorage.setItem('sp_gallery', JSON.stringify(imagesData));
                 cargarGaleriaDesdeStorage();
-                toast(`${imagesData.length} imágenes guardadas en galería`);
-                log(`Galería actualizada: ${imagesData.length} imágenes`, 'log-info');
+                toast(`${imagesData.length} imágenes guardadas`);
+                log(`Galería: ${imagesData.length} imágenes`, 'log-info');
             }
         };
         reader.readAsDataURL(file);
     });
 }
-
 function cargarGaleriaDesdeStorage() {
     const stored = localStorage.getItem('sp_gallery');
-    if (!stored) return;
+    if(!stored) return;
     const images = JSON.parse(stored);
     const previewDiv = document.getElementById('gallery-preview');
     previewDiv.innerHTML = '';
-    images.forEach((img, idx) => {
+    images.forEach((img,idx)=>{
         const thumb = document.createElement('img');
         thumb.src = img.dataURL;
         thumb.className = 'thumb';
-        thumb.title = img.name;
         thumb.onclick = () => verFlyerConcreto(idx);
         previewDiv.appendChild(thumb);
     });
-    document.getElementById('flyer-preview-row').classList.remove('hidden');
 }
-
-function verFlyerActual() {
-    const stored = localStorage.getItem('sp_gallery');
-    if (!stored) { toast('No hay imágenes'); return; }
-    const images = JSON.parse(stored);
-    if (!images.length) return;
-    const randomIdx = Math.floor(Math.random() * images.length);
-    verFlyerConcreto(randomIdx);
-}
-
 function verFlyerConcreto(idx) {
     const stored = localStorage.getItem('sp_gallery');
-    if (!stored) return;
+    if(!stored) return;
     const images = JSON.parse(stored);
-    if (images[idx]) {
-        document.getElementById('flyer-img').src = images[idx].dataURL;
-        document.getElementById('flyer-modal').classList.add('open');
-    }
+    if(images[idx]) { document.getElementById('flyer-img').src = images[idx].dataURL; document.getElementById('flyer-modal').classList.add('open'); }
 }
+function cerrarFlyerModal() { document.getElementById('flyer-modal').classList.remove('open'); }
 
-function cerrarFlyerModal() {
-    document.getElementById('flyer-modal').classList.remove('open');
-}
-
-// ── GRUPOS ─────────────────────────────────────────────────────────────────
+// ---------- GRUPOS (MANUAL Y PARA HORARIOS) ----------
 function obtenerGruposZona(zona) {
-    if (zona === 'all') return [...baseGrupos.manana, ...baseGrupos.tarde, ...baseGrupos.premium];
-    return baseGrupos[zona] || [];
+    if(zona === 'all') {
+        let todos = [];
+        for(let key in gruposPorHorario) todos = todos.concat(gruposPorHorario[key].groups);
+        return todos;
+    }
+    return gruposPorHorario[zona]?.groups || [];
 }
 
 function cambiarZona() {
@@ -1248,7 +580,7 @@ function cambiarZona() {
     const grupos = obtenerGruposZona(zona);
     const cont = document.getElementById('groups-container');
     cont.innerHTML = '';
-    grupos.forEach((g, i) => {
+    grupos.forEach((g,i) => {
         cont.innerHTML += `<label id="gr-${i}" class="group-row"><span class="group-name-text">${g.name}</span><input type="checkbox" checked value="${g.url}" class="sp-group"></label>`;
     });
     actualizarUI();
@@ -1259,226 +591,268 @@ function actualizarUI() {
     const total = checkboxes.length;
     document.getElementById('tot-idx').textContent = total;
     document.getElementById('cur-idx').textContent = Math.min(currentIndex, total);
-    const pct = total > 0 ? Math.round((currentIndex / total) * 100) : 0;
+    const pct = total>0 ? Math.round((currentIndex/total)*100) : 0;
     document.getElementById('track-pct').textContent = `${pct}%`;
     document.getElementById('progress-fill').style.width = `${pct}%`;
-    checkboxes.forEach((_, idx) => {
+    checkboxes.forEach((_,idx)=>{
         const row = document.getElementById(`gr-${idx}`);
-        if (!row) return;
-        if (idx === currentIndex && total > 0) {
+        if(!row) return;
+        if(idx===currentIndex && total>0) {
             row.classList.add('active');
             document.getElementById('track-name').textContent = row.querySelector('.group-name-text').textContent;
-            row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            row.scrollIntoView({ block:'nearest', behavior:'smooth' });
         } else row.classList.remove('active');
     });
 }
 
-// ── WAKELOCK ───────────────────────────────────────────────────────────────
-async function solicitarWakeLock() {
-    if ('wakeLock' in navigator) {
-        try {
-            wakeLock = await navigator.wakeLock.request('screen');
-            document.getElementById('wl-status-text').textContent = 'Activo';
-            document.getElementById('wl-status-text').style.color = 'var(--accent)';
-            document.getElementById('wakelock-badge').textContent = '⚡';
-        } catch(e) { console.warn(e); }
-    }
-}
-function liberarWakeLock() {
-    if (wakeLock) { wakeLock.release(); wakeLock = null; }
-    document.getElementById('wl-status-text').textContent = 'Inactivo';
-    document.getElementById('wl-status-text').style.color = 'var(--text-3)';
-    document.getElementById('wakelock-badge').textContent = '🔒';
-}
+// ---------- WAKELOCK ----------
+async function solicitarWakeLock() { if('wakeLock' in navigator) { try { wakeLock = await navigator.wakeLock.request('screen'); document.getElementById('wl-status-text').textContent='Activo'; document.getElementById('wl-status-text').style.color='var(--accent)'; document.getElementById('wakelock-badge').textContent='⚡'; } catch(e){} } }
+function liberarWakeLock() { if(wakeLock){ wakeLock.release(); wakeLock=null; } document.getElementById('wl-status-text').textContent='Inactivo'; document.getElementById('wl-status-text').style.color='var(--text-3)'; document.getElementById('wakelock-badge').textContent='🔒'; }
 
-// ── MOTOR DE TRANSMISIÓN ───────────────────────────────────────────────────
-function construirCola() {
-    const checkboxes = Array.from(document.querySelectorAll('.sp-group:checked'));
-    return checkboxes.slice(currentIndex).map(cb => cb.value);
-}
+// ---------- MOTOR (MANUAL) ----------
+function construirCola() { return Array.from(document.querySelectorAll('.sp-group:checked')).slice(currentIndex).map(cb=>cb.value); }
 
 function lanzarMotor() {
     const copies = localStorage.getItem('sp_copies');
-    if (!copies || JSON.parse(copies).length === 0) { toast('Genera variaciones de IA o manuales primero.'); return; }
+    if(!copies || JSON.parse(copies).length===0) { toast('Genera variaciones (IA o manual)'); return; }
     const cola = construirCola();
-    if (cola.length === 0) { toast('No hay grupos pendientes'); return; }
+    if(cola.length===0) { toast('No hay grupos pendientes'); return; }
     localStorage.setItem('sp_queue', JSON.stringify(cola));
-    localStorage.setItem('sp_bot_active', 'true');
+    localStorage.setItem('sp_bot_active','true');
     localStorage.setItem('sp_idx', String(currentIndex));
-    document.getElementById('btn-play').style.display = 'none';
-    document.getElementById('btn-pause').style.display = 'block';
+    document.getElementById('btn-play').style.display='none';
+    document.getElementById('btn-pause').style.display='block';
     document.getElementById('eq-anim').classList.add('active');
-    document.getElementById('motor-status').innerHTML = '<span class="dot green"></span>TRANSMITIENDO';
-    document.getElementById('motor-status').className = 'value status-running';
+    document.getElementById('motor-status').innerHTML='<span class="dot green"></span>TRANSMITIENDO';
+    document.getElementById('motor-status').className='value status-running';
     solicitarWakeLock();
-    log(`▶ Motor activo. Cola: ${cola.length} grupos.`, 'log-info');
-    try { window.open(cola[0], '_blank'); log('🌐 Facebook abierto', 'log-info'); } catch(e) { log('Abre manualmente', 'log-warn'); }
-    if (pollingInterval) clearInterval(pollingInterval);
-    pollingInterval = setInterval(() => {
-        const idxGuardado = parseInt(localStorage.getItem('sp_idx') || '0');
-        if (idxGuardado !== currentIndex) {
+    log(`▶ Motor manual activado. Cola: ${cola.length} grupos.`, 'log-info');
+    try { window.open(cola[0], '_blank'); log('🌐 Facebook abierto', 'log-info'); } catch(e){ log('Abre Facebook manual', 'log-warn'); }
+    if(pollingInterval) clearInterval(pollingInterval);
+    pollingInterval = setInterval(()=>{
+        const idxGuardado = parseInt(localStorage.getItem('sp_idx')||'0');
+        if(idxGuardado !== currentIndex) {
             currentIndex = idxGuardado;
             actualizarUI();
-            const colaActual = JSON.parse(localStorage.getItem('sp_queue') || '[]');
+            const colaActual = JSON.parse(localStorage.getItem('sp_queue')||'[]');
             log(`✓ Publicado en grupo #${currentIndex}`, 'log-success');
-            if (colaActual.length === 0 || localStorage.getItem('sp_bot_active') !== 'true') {
+            if(colaActual.length===0 || localStorage.getItem('sp_bot_active')!=='true') {
                 log('🏁 Cola completada.', 'log-info');
                 detenerMotor();
-                currentIndex = 0;
-                localStorage.setItem('sp_idx', '0');
-                actualizarUI();
+                currentIndex=0; localStorage.setItem('sp_idx','0'); actualizarUI();
             }
         }
     }, 4000);
 }
 
 function detenerMotor() {
-    if (pollingInterval) clearInterval(pollingInterval);
-    localStorage.setItem('sp_bot_active', 'false');
-    document.getElementById('btn-play').style.display = 'block';
-    document.getElementById('btn-pause').style.display = 'none';
+    if(pollingInterval) clearInterval(pollingInterval);
+    localStorage.setItem('sp_bot_active','false');
+    document.getElementById('btn-play').style.display='block';
+    document.getElementById('btn-pause').style.display='none';
     document.getElementById('eq-anim').classList.remove('active');
-    document.getElementById('motor-status').innerHTML = '<span class="dot amber"></span>EN PAUSA';
-    document.getElementById('motor-status').className = 'value status-paused';
+    document.getElementById('motor-status').innerHTML='<span class="dot amber"></span>EN PAUSA';
+    document.getElementById('motor-status').className='value status-paused';
     liberarWakeLock();
-    log(`⏸ Motor pausado. Posición en grupo #${currentIndex+1}`, 'log-warn');
+    log('⏸ Motor pausado', 'log-warn');
 }
 
 function saltarGrupo(dir) {
     const total = document.querySelectorAll('.sp-group').length;
-    if (total === 0) return;
-    currentIndex = Math.max(0, Math.min(total-1, currentIndex + dir));
+    if(total===0) return;
+    currentIndex = Math.max(0, Math.min(total-1, currentIndex+dir));
     localStorage.setItem('sp_idx', currentIndex);
     actualizarUI();
     log(`Salto manual → grupo #${currentIndex+1}`);
 }
 
-// ── ADMIN: GESTIÓN DE CLAVES ───────────────────────────────────────────────
+// ---------- PROGRAMACIÓN HORARIA AUTOMÁTICA (NUEVO) ----------
+function cargarHorariosGuardados() {
+    const saved = localStorage.getItem(HORARIOS_STORAGE_KEY);
+    if(saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            // Fusionar con la estructura original (por si hay nuevos campos)
+            for(let key in gruposPorHorario) {
+                if(parsed[key]) {
+                    gruposPorHorario[key].enabled = parsed[key].enabled !== undefined ? parsed[key].enabled : gruposPorHorario[key].enabled;
+                    gruposPorHorario[key].start = parsed[key].start || gruposPorHorario[key].start;
+                    gruposPorHorario[key].end = parsed[key].end || gruposPorHorario[key].end;
+                    // No guardamos grupos aquí porque se editan desde el código o desde otro panel
+                }
+            }
+        } catch(e) {}
+    }
+}
+
+function guardarHorarios() {
+    // Recoger valores de la UI
+    for(let key in gruposPorHorario) {
+        const enabledCheck = document.getElementById(`schedule-${key}-enabled`);
+        const startInput = document.getElementById(`schedule-${key}-start`);
+        const endInput = document.getElementById(`schedule-${key}-end`);
+        if(enabledCheck) gruposPorHorario[key].enabled = enabledCheck.checked;
+        if(startInput) gruposPorHorario[key].start = startInput.value;
+        if(endInput) gruposPorHorario[key].end = endInput.value;
+    }
+    localStorage.setItem(HORARIOS_STORAGE_KEY, JSON.stringify({
+        manana: { enabled: gruposPorHorario.manana.enabled, start: gruposPorHorario.manana.start, end: gruposPorHorario.manana.end },
+        tarde: { enabled: gruposPorHorario.tarde.enabled, start: gruposPorHorario.tarde.start, end: gruposPorHorario.tarde.end },
+        noche: { enabled: gruposPorHorario.noche.enabled, start: gruposPorHorario.noche.start, end: gruposPorHorario.noche.end }
+    }));
+    toast('Horarios guardados');
+    log('Configuración de horarios actualizada', 'log-success');
+}
+
+function renderizarHorariosEnUI() {
+    const container = document.getElementById('schedule-list');
+    if(!container) return;
+    container.innerHTML = '';
+    const orden = ['manana','tarde','noche'];
+    for(let key of orden) {
+        const h = gruposPorHorario[key];
+        const div = document.createElement('div');
+        div.className = 'schedule-item';
+        div.innerHTML = `
+            <label style="display:flex; align-items:center; gap:0.5rem;">
+                <input type="checkbox" id="schedule-${key}-enabled" ${h.enabled ? 'checked' : ''}>
+                <strong style="color:var(--accent);">${h.name}</strong>
+            </label>
+            <div class="schedule-time">
+                <span>Desde:</span> <input type="time" id="schedule-${key}-start" value="${h.start}" step="60">
+                <span>Hasta:</span> <input type="time" id="schedule-${key}-end" value="${h.end}" step="60">
+            </div>
+            <div class="schedule-groups">📌 ${h.groups.length} grupos asignados (edita en código o más adelante)</div>
+        `;
+        container.appendChild(div);
+    }
+}
+
+function iniciarScheduler() {
+    if(schedulerInterval) clearInterval(schedulerInterval);
+    schedulerInterval = setInterval(() => {
+        const ahora = new Date();
+        const horaActual = `${String(ahora.getHours()).padStart(2,'0')}:${String(ahora.getMinutes()).padStart(2,'0')}`;
+        // Solo si el motor no está activo ya (para no interferir)
+        const botActivo = localStorage.getItem('sp_bot_active') === 'true';
+        if(botActivo) return;
+
+        for(let key in gruposPorHorario) {
+            const franja = gruposPorHorario[key];
+            if(!franja.enabled) continue;
+            if(horaActual >= franja.start && horaActual <= franja.end) {
+                // Verificar si ya se ejecutó hoy esta franja
+                const hoyStr = ahora.toISOString().slice(0,10);
+                const lastRunKey = `sp_lastrun_${key}`;
+                const lastRun = localStorage.getItem(lastRunKey);
+                if(lastRun === hoyStr) continue; // ya se publicó hoy
+                // Ejecutar esta franja
+                log(`🕒 Franja horaria activada: ${franja.name} (${franja.start}-${franja.end})`, 'log-info');
+                // Construir cola con los grupos de esta franja
+                const cola = franja.groups.map(g => g.url);
+                if(cola.length === 0) { log(`No hay grupos para ${franja.name}`, 'log-warn'); continue; }
+                // Guardar cola y activar motor
+                localStorage.setItem('sp_queue', JSON.stringify(cola));
+                localStorage.setItem('sp_bot_active', 'true');
+                localStorage.setItem('sp_idx', '0');
+                localStorage.setItem(lastRunKey, hoyStr);
+                // Si el dashboard está visible, reflejamos el estado
+                document.getElementById('btn-play').style.display='none';
+                document.getElementById('btn-pause').style.display='block';
+                document.getElementById('eq-anim').classList.add('active');
+                document.getElementById('motor-status').innerHTML='<span class="dot green"></span>TRANSMITIENDO';
+                document.getElementById('motor-status').className='value status-running';
+                solicitarWakeLock();
+                // Abrir el primer grupo
+                try { window.open(cola[0], '_blank'); log('🌐 Abriendo grupo automático', 'log-info'); } catch(e){}
+                // Iniciar polling (similar a lanzarMotor)
+                if(pollingInterval) clearInterval(pollingInterval);
+                pollingInterval = setInterval(()=>{
+                    const idxGuardado = parseInt(localStorage.getItem('sp_idx')||'0');
+                    const colaActual = JSON.parse(localStorage.getItem('sp_queue')||'[]');
+                    if(colaActual.length === 0 || localStorage.getItem('sp_bot_active')!=='true') {
+                        clearInterval(pollingInterval);
+                        pollingInterval = null;
+                        detenerMotor();
+                        log(`✅ Franja ${franja.name} completada`, 'log-success');
+                    }
+                }, 4000);
+                break; // solo una franja a la vez
+            }
+        }
+    }, 60000); // revisar cada minuto
+}
+
+// ---------- ADMIN (CLAVES) ----------
 function generarClaveCliente() {
     const nombre = document.getElementById('client-name-input').value.trim();
-    if (!nombre) { toast('Escribe nombre'); return; }
+    if(!nombre) { toast('Escribe nombre'); return; }
     const clave = generarClave(nombre);
     const ahora = new Date();
     const vence = new Date(ahora.getFullYear(), ahora.getMonth()+1, ahora.getDate());
-    clientKeys[clave] = { nombre, telefonos: 1, vence: vence.toLocaleDateString('es-MX'), generado: ahora.toLocaleDateString('es-MX') };
+    clientKeys[clave] = { nombre, telefonos:1, vence: vence.toLocaleDateString('es-MX'), generado: ahora.toLocaleDateString('es-MX') };
     localStorage.setItem('sp_keys', JSON.stringify(clientKeys));
     renderizarTablaClaves();
     document.getElementById('client-name-input').value = '';
     navigator.clipboard.writeText(clave).catch(()=>{});
-    toast(`✦ Clave: ${clave} (copiada)`);
+    toast(`Clave: ${clave} (copiada)`);
 }
-
-function revocarClave(clave) {
-    if (!confirm(`¿Revocar clave ${clave}?`)) return;
-    delete clientKeys[clave];
-    localStorage.setItem('sp_keys', JSON.stringify(clientKeys));
-    renderizarTablaClaves();
-    toast('Clave revocada.');
-}
-
+function revocarClave(clave) { if(!confirm(`¿Revocar ${clave}?`)) return; delete clientKeys[clave]; localStorage.setItem('sp_keys',JSON.stringify(clientKeys)); renderizarTablaClaves(); toast('Revocada'); }
 function renderizarTablaClaves() {
     const tbody = document.getElementById('keys-tbody');
     tbody.innerHTML = '';
     const entradas = Object.entries(clientKeys);
-    if (entradas.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-3);text-align:center;">Sin claves generadas</td></tr>'; return; }
-    entradas.forEach(([clave, info]) => {
+    if(entradas.length===0) { tbody.innerHTML='<tr><td colspan="5" style="text-align:center;">Sin claves</td></tr>'; return; }
+    entradas.forEach(([clave, info])=>{
         const match = clave.match(/SP-([A-Z0-9]+)(\d{2})(\d{2})$/);
         const mes = match ? parseInt(match[2]) : 0, anio = match ? parseInt('20'+match[3]) : 0;
         const ahora = new Date();
-        const vencida = (anio < ahora.getFullYear()) || (anio === ahora.getFullYear() && mes < ahora.getMonth()+1);
+        const vencida = (anio < ahora.getFullYear()) || (anio===ahora.getFullYear() && mes < ahora.getMonth()+1);
         tbody.innerHTML += `<tr><td>${info.nombre}</td><td class="key-val">${clave}</td><td class="key-exp ${vencida?'expired':''}">${info.vence}${vencida?' ✕':''}</td><td style="text-align:center;">${info.telefonos}</td><td><button class="btn-revoke" onclick="revocarClave('${clave}')">Revocar</button></td></tr>`;
     });
 }
 
-function cerrarSesion() {
-    detenerMotor();
-    localStorage.removeItem('sp_auth');
-    localStorage.removeItem('sp_role');
-    window.location.reload();
-}
+function cerrarSesion() { detenerMotor(); if(schedulerInterval) clearInterval(schedulerInterval); localStorage.removeItem('sp_auth'); localStorage.removeItem('sp_role'); window.location.reload(); }
 
-// ── AUTO-LOGIN ──────────────────────────────────────────────────────────────
+// ---------- AUTO-LOGIN ----------
 (function autoLogin() {
     const clave = localStorage.getItem('sp_auth');
-    if (clave) { document.getElementById('access-key').value = clave; verificarAcceso(); }
+    if(clave) { document.getElementById('access-key').value = clave; verificarAcceso(); }
 })();
 
-// ═══════════════════════════════════════════════════════════════════════════
-// GUÍA INTERACTIVA NEON (NO INTERFIERE CON NINGUNA FUNCIÓN EXISTENTE)
-// ═══════════════════════════════════════════════════════════════════════════
+// ---------- GUÍA NEON (OPCIONAL) ----------
 (function iniciarGuiaNeon() {
-    if (localStorage.getItem('sp_tutorial_completed') === 'true') return;
+    if(localStorage.getItem('sp_tutorial_completed')==='true') return;
     const pasos = [
-        { selector: '#base-prompt', completado: () => document.getElementById('base-prompt').value.trim().length > 10, mensaje: '✏️ Escribe tu oferta base (ej: Internet 100MB + TV)' },
-        { selector: '#gallery-input', completado: () => { const input = document.getElementById('gallery-input'); return input.files && input.files.length > 0; }, mensaje: '🖼️ Sube al menos 5 imágenes (flyers, promos)' },
-        { selector: '#btn-generate', completado: () => { const copies = localStorage.getItem('sp_copies'); return copies && JSON.parse(copies).length >= 3; }, mensaje: '✨ Genera 3 variaciones de texto con IA o manualmente' },
-        { selector: '.groups-container .group-row:first-child input', completado: () => document.querySelectorAll('.sp-group:checked').length > 0, mensaje: '📌 Selecciona los grupos donde publicarás' },
-        { selector: '#btn-play', completado: () => false, mensaje: '🚀 Presiona PLAY y mira cómo publica automáticamente' }
+        { selector:'#base-prompt', completado:()=>document.getElementById('base-prompt').value.trim().length>10, mensaje:'✏️ Escribe oferta base' },
+        { selector:'#gallery-input', completado:()=>document.getElementById('gallery-input').files.length>0, mensaje:'🖼️ Sube imágenes' },
+        { selector:'#btn-generate', completado:()=>{ const c=localStorage.getItem('sp_copies'); return c && JSON.parse(c).length>=3; }, mensaje:'✨ Genera variaciones (IA o manual)' },
+        { selector:'.groups-container .group-row:first-child input', completado:()=>document.querySelectorAll('.sp-group:checked').length>0, mensaje:'📌 Selecciona grupos' },
+        { selector:'#btn-play', completado:()=>false, mensaje:'🚀 Presiona PLAY o espera horario automático' }
     ];
-    let pasoActual = parseInt(localStorage.getItem('sp_tutorial_step') || '0');
-    let resaltadorActivo = null;
-    function limpiarResaltado() {
-        if (resaltadorActivo) {
-            resaltadorActivo.classList.remove('neon-guide-highlight');
-            resaltadorActivo = null;
-        }
+    let pasoActual = parseInt(localStorage.getItem('sp_tutorial_step')||'0');
+    let resaltador = null;
+    function limpiar(){ if(resaltador){ resaltador.classList.remove('neon-guide-highlight'); resaltador=null; } }
+    function resaltar(el){ if(!el) return; limpiar(); resaltador=el; el.classList.add('neon-guide-highlight'); }
+    function verificar(){
+        if(pasoActual>=pasos.length){ localStorage.setItem('sp_tutorial_completed','true'); limpiar(); toast('🎉 Listo! A vender'); return; }
+        const p = pasos[pasoActual];
+        const el = document.querySelector(p.selector);
+        if(p.completado()){
+            pasoActual++; localStorage.setItem('sp_tutorial_step',pasoActual); limpiar();
+            if(pasoActual<pasos.length) { const sig=document.querySelector(pasos[pasoActual].selector); if(sig) resaltar(sig); toast(pasos[pasoActual].mensaje,4000); }
+            else verificar();
+        } else { if(el && resaltador!==el) resaltar(el); }
     }
-    function resaltarElemento(el) {
-        if (!el) return;
-        limpiarResaltado();
-        resaltadorActivo = el;
-        el.classList.add('neon-guide-highlight');
-    }
-    function mostrarMensajePaso(idx) {
-        if (idx >= pasos.length) return;
-        if (typeof toast === 'function') toast(pasos[idx].mensaje, 4000);
-    }
-    function verificarYAvanzar() {
-        if (pasoActual >= pasos.length) {
-            localStorage.setItem('sp_tutorial_completed', 'true');
-            localStorage.removeItem('sp_tutorial_step');
-            limpiarResaltado();
-            toast('🎉 ¡Felicidades! Ya dominas ShadowPost Pro. ¡A vender!', 5000);
-            return;
-        }
-        const paso = pasos[pasoActual];
-        const elemento = document.querySelector(paso.selector);
-        const completado = paso.completado();
-        if (completado) {
-            pasoActual++;
-            localStorage.setItem('sp_tutorial_step', pasoActual);
-            limpiarResaltado();
-            if (pasoActual < pasos.length) {
-                const sigElemento = document.querySelector(pasos[pasoActual].selector);
-                if (sigElemento) resaltarElemento(sigElemento);
-                mostrarMensajePaso(pasoActual);
-            } else verificarYAvanzar();
-        } else {
-            if (elemento && resaltadorActivo !== elemento) {
-                resaltarElemento(elemento);
-                mostrarMensajePaso(pasoActual);
-            }
-        }
-    }
-    function iniciarObservadores() {
-        const observer = new MutationObserver(() => verificarYAvanzar());
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value', 'files'] });
-        document.getElementById('base-prompt')?.addEventListener('input', () => verificarYAvanzar());
-        document.getElementById('gallery-input')?.addEventListener('change', () => verificarYAvanzar());
-        document.getElementById('btn-generate')?.addEventListener('click', () => setTimeout(verificarYAvanzar, 800));
-        document.querySelector('.groups-container')?.addEventListener('change', (e) => { if (e.target.classList?.contains('sp-group')) verificarYAvanzar(); });
-        document.getElementById('btn-play')?.addEventListener('click', () => {
-            if (pasoActual === pasos.length-1) {
-                pasoActual++; localStorage.setItem('sp_tutorial_step', pasoActual);
-                localStorage.setItem('sp_tutorial_completed', 'true');
-                limpiarResaltado();
-                toast('🚀 ¡Motor lanzado! Observa la barra de progreso.', 5000);
-            }
-        });
-        setInterval(verificarYAvanzar, 2000);
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { verificarYAvanzar(); iniciarObservadores(); });
-    else { verificarYAvanzar(); iniciarObservadores(); }
+    function observador(){ new MutationObserver(()=>verificar()).observe(document.body,{childList:true,subtree:true,attributes:true}); }
+    document.getElementById('base-prompt')?.addEventListener('input',()=>verificar());
+    document.getElementById('gallery-input')?.addEventListener('change',()=>verificar());
+    document.getElementById('btn-generate')?.addEventListener('click',()=>setTimeout(verificar,800));
+    document.querySelector('.groups-container')?.addEventListener('change',(e)=> { if(e.target.classList?.contains('sp-group')) verificar(); });
+    document.getElementById('btn-play')?.addEventListener('click',()=>{ if(pasoActual===pasos.length-1){ localStorage.setItem('sp_tutorial_completed','true'); limpiar(); toast('🚀 Motor lanzado'); } });
+    setInterval(verificar,2000);
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{ verificar(); observador(); });
+    else { verificar(); observador(); }
 })();
 </script>
 </body>
