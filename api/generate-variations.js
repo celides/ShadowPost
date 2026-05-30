@@ -1,59 +1,110 @@
-// api/generate-variations.js
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Método no permitido.' });
     }
 
     try {
-        const { idea, t1, t2 } = JSON.parse(req.body);
-        if (!idea) return res.status(400).json({ error: 'Falta la idea base.' });
-
-        const API_KEY = process.env.GEMINI_API_KEY; 
-        
-        if (!API_KEY) {
-            return res.status(500).json({ error: 'Falta la configuración de la llave Gemini en el servidor.' });
+        // Manejo robusto del body (Vercel puede mandarlo como string u objeto)
+        let body = req.body;
+        if (typeof body === 'string') {
+            body = JSON.parse(body);
         }
 
-        const systemPrompt = `Eres el motor de IA de ShadowPost Pro v3, un estratega de elite en neuroventas y cambaceo digital para telecomunicaciones.
-Tu tarea es transformar una idea base en exactamente 3 variaciones de textos persuasivos y optimizados para grupos de Facebook.
+        const { idea, telefonos } = body;
+
+        if (!idea) {
+            return res.status(400).json({ error: 'Falta la idea base.' });
+        }
+
+        const API_KEY = process.env.GEMINI_API_KEY;
+
+        if (!API_KEY) {
+            return res.status(500).json({
+                error: 'Falta la configuración de la llave Gemini en el servidor.',
+                debug: 'Variable GEMINI_API_KEY no encontrada en entorno de Producción.'
+            });
+        }
+
+        // Construcción dinámica de instrucciones de teléfonos
+        const telefonosActivos = (telefonos || []).filter(t => t && t.trim() !== '');
+        let instruccionTelefonos = '';
+        if (telefonosActivos.length > 0) {
+            instruccionTelefonos = `Distribuye los siguientes números de WhatsApp entre las variaciones de forma natural:\n`;
+            telefonosActivos.forEach((t, i) => {
+                instruccionTelefonos += `- Variación ${i + 1}: wa.me/${t.replace(/\D/g,'')}\n`;
+            });
+            if (telefonosActivos.length < 3) {
+                instruccionTelefonos += `- Las variaciones restantes usan: wa.me/${telefonosActivos[0].replace(/\D/g,'')}\n`;
+            }
+        }
+
+        const systemPrompt = `Eres el motor de IA de ShadowPost Pro, un estratega de élite en neuroventas y cambaceo digital para telecomunicaciones en México.
+
+Tu tarea: transformar una oferta base en exactamente 3 variaciones de textos persuasivos para grupos de Facebook y WhatsApp.
+
 REGLAS ESTRICTAS:
-- Genera exactamente 3 variaciones ingeniosas, directas y al grano con psicología de urgencia o escasez.
-- Cada variación debe ser diferente en su estructura de texto para evadir algoritmos de SPAM de Facebook.
-- Al final de cada variación, incluye el enlace de WhatsApp dinámico apuntando al número proporcionado (wa.me/${t1}). Si hay un segundo número (${t2 || ''}), úsalo en la variación 2.
-- NO agregues introducciones ni notas. Devuelve ÚNICAMENTE un objeto JSON con un arreglo llamado "variaciones" conteniendo las 3 cadenas de texto. Ej: {"variaciones": ["texto1", "texto2", "texto3"]}`;
+1. Genera EXACTAMENTE 3 variaciones. Nada más, nada menos.
+2. Cada variación debe tener estructura diferente (una con emojis, una formal, una con urgencia/escasez) para evadir filtros de SPAM.
+3. Usa psicología de ventas: urgencia, escasez, beneficio claro, llamada a acción directa.
+4. Incluye el enlace de WhatsApp al final de cada variación.
+5. Textos concisos y directos. Sin relleno. Sin hashtags.
+6. Lenguaje natural mexicano, no corporativo.
+${instruccionTelefonos}
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: `${systemPrompt}\n\nOferta base del vendedor: ${idea}` }]
-                }],
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
-            })
-        });
+FORMATO DE RESPUESTA: Devuelve ÚNICAMENTE un objeto JSON válido, sin markdown, sin texto extra:
+{"variaciones": ["texto_variacion_1", "texto_variacion_2", "texto_variacion_3"]}`;
 
-        const rawData = await response.json();
-        
+        const geminiResponse = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: `${systemPrompt}\n\nOferta base: ${idea}` }]
+                    }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        temperature: 0.8,
+                        maxOutputTokens: 1500
+                    }
+                })
+            }
+        );
+
+        if (!geminiResponse.ok) {
+            const errorBody = await geminiResponse.text();
+            throw new Error(`Gemini status ${geminiResponse.status}: ${errorBody}`);
+        }
+
+        const rawData = await geminiResponse.json();
+
         if (!rawData.candidates || rawData.candidates.length === 0) {
-            throw new Error('Gemini no devolvió candidatos.');
+            throw new Error('Gemini no devolvió candidatos. Posible bloqueo de contenido o límite de cuota.');
         }
 
         let aiResponseText = rawData.candidates[0].content.parts[0].text.trim();
-        
-        // FILTRO DE SEGURIDAD EXTREMA: Limpia marcas de bloques markdown si Gemini las agrega por error
-        if (aiResponseText.startsWith("```")) {
-            aiResponseText = aiResponseText.replace(/^```json/, "").replace(/^```/, "").replace(/```$/, "").trim();
+
+        // Limpieza defensiva de bloques markdown
+        aiResponseText = aiResponseText
+            .replace(/^```json\s*/i, '')
+            .replace(/^```\s*/i, '')
+            .replace(/\s*```$/i, '')
+            .trim();
+
+        const jsonValidado = JSON.parse(aiResponseText);
+
+        if (!jsonValidado.variaciones || !Array.isArray(jsonValidado.variaciones)) {
+            throw new Error('Formato inesperado de Gemini: falta el campo "variaciones".');
         }
 
-        // Validamos que sea un JSON perfectamente limpio antes de mandarlo a tu celular
-        const jsonValidado = JSON.parse(aiResponseText);
         return res.status(200).json(jsonValidado);
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Fallo en la red de Gemini.', detalle: error.message });
+        console.error('[ShadowPost API Error]', error.message);
+        return res.status(500).json({
+            error: 'Error al procesar la solicitud.',
+            detalle: error.message
+        });
     }
 }
