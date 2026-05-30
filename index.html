@@ -1346,60 +1346,91 @@ function liberarWakeLock() {
     document.getElementById('wakelock-badge').textContent = '🔒';
 }
 
-// ── MOTOR DE TRANSMISIÓN ─────────────────────────────
+// ── MOTOR DE TRANSMISIÓN (Sincronizado con Tampermonkey) ──────────
+// El dashboard construye la COLA de URLs y activa el flag sp_bot_active.
+// El script de Tampermonkey en Kiwi Browser lee esa cola y publica.
+// El índice sp_idx avanza desde Tampermonkey al terminar cada grupo.
+// El dashboard hace polling cada 3s para reflejar el avance en tiempo real.
+
+let pollingInterval = null;
+
+function construirCola() {
+    // Lee todos los grupos seleccionados (checkboxes marcados)
+    const checkboxes = Array.from(document.querySelectorAll('.sp-group:checked'));
+    // Toma solo los que están por encima del índice actual
+    return checkboxes.slice(currentIndex).map(cb => cb.value);
+}
+
 function lanzarMotor() {
     const copies = localStorage.getItem('sp_copies');
-    if (!copies) { toast('Genera variaciones primero.'); return; }
+    if (!copies || JSON.parse(copies).length === 0) {
+        toast('Genera variaciones de IA primero.'); return;
+    }
 
-    const total = document.querySelectorAll('.sp-group').length;
-    if (total === 0) { toast('Selecciona grupos primero.'); return; }
+    const cola = construirCola();
+    if (cola.length === 0) {
+        toast('No hay grupos pendientes en la cola.'); return;
+    }
 
+    // Guardar cola para que Tampermonkey la lea
+    localStorage.setItem('sp_queue',      JSON.stringify(cola));
+    localStorage.setItem('sp_bot_active', 'true');
+    localStorage.setItem('sp_idx',        String(currentIndex));
+
+    // UI → estado activo
     document.getElementById('btn-play').style.display  = 'none';
     document.getElementById('btn-pause').style.display = 'block';
     document.getElementById('eq-anim').classList.add('active');
-
-    document.getElementById('motor-status').innerHTML =
-        '<span class="dot green"></span>TRANSMITIENDO';
-    document.getElementById('motor-status').className = 'value status-running';
+    document.getElementById('motor-status').innerHTML  = '<span class="dot green"></span>TRANSMITIENDO';
+    document.getElementById('motor-status').className  = 'value status-running';
 
     solicitarWakeLock();
-    log(`Motor iniciado. Reanudando desde grupo #${currentIndex + 1}`, 'log-info');
+    log(`▶ Motor activo. Cola: ${cola.length} grupos. Abre Facebook en Kiwi Browser.`, 'log-info');
+    log(`➡ Primer grupo: ${cola[0]}`, 'log-info');
 
-    motorInterval = setInterval(() => {
-        const checkboxes = document.querySelectorAll('.sp-group');
-        const total = checkboxes.length;
+    // Abre el primer grupo automáticamente en nueva pestaña de Kiwi
+    // (funciona porque Kiwi Browser permite window.open desde scripts)
+    try {
+        window.open(cola[0], '_blank');
+        log('🌐 Facebook abierto en nueva pestaña.', 'log-info');
+    } catch(e) {
+        log('⚠ Abre manualmente Facebook → el script tomará el control.', 'log-warn');
+    }
 
-        if (currentIndex < total) {
-            const row = document.getElementById(`gr-${currentIndex}`);
-            const nombre = row ? row.querySelector('.group-name-text').textContent : `Grupo #${currentIndex+1}`;
+    // Polling: revisa cada 4s si Tampermonkey avanzó el índice
+    pollingInterval = setInterval(() => {
+        const idxGuardado = parseInt(localStorage.getItem('sp_idx') || '0');
+        if (idxGuardado !== currentIndex) {
+            currentIndex = idxGuardado;
             actualizarUI();
-            log(`✓ Post enviado: ${nombre}`, 'log-success');
-            currentIndex++;
-            localStorage.setItem('sp_idx', currentIndex);
 
-            if (currentIndex >= total) {
-                log('🏁 Ciclo completo. Motor detenido.', 'log-info');
+            const colaActual = JSON.parse(localStorage.getItem('sp_queue') || '[]');
+            const nombreGrupo = document.getElementById(`gr-${currentIndex - 1}`)?.querySelector('.group-name-text')?.textContent || `Grupo #${currentIndex}`;
+            log(`✓ Publicado en: ${nombreGrupo}`, 'log-success');
+
+            if (colaActual.length === 0 || localStorage.getItem('sp_bot_active') !== 'true') {
+                log('🏁 Cola completada. Ciclo finalizado.', 'log-info');
                 detenerMotor();
                 currentIndex = 0;
                 localStorage.setItem('sp_idx', '0');
                 actualizarUI();
             }
         }
-    }, 6000);
+    }, 4000);
 }
 
 function detenerMotor() {
-    clearInterval(motorInterval);
+    clearInterval(pollingInterval);
+    localStorage.setItem('sp_bot_active', 'false');
+
     document.getElementById('btn-play').style.display  = 'block';
     document.getElementById('btn-pause').style.display = 'none';
     document.getElementById('eq-anim').classList.remove('active');
-
-    document.getElementById('motor-status').innerHTML =
-        '<span class="dot amber"></span>EN PAUSA';
-    document.getElementById('motor-status').className = 'value status-paused';
+    document.getElementById('motor-status').innerHTML  = '<span class="dot amber"></span>EN PAUSA';
+    document.getElementById('motor-status').className  = 'value status-paused';
 
     liberarWakeLock();
-    log(`Motor pausado. Guardado en grupo #${currentIndex + 1}.`, 'log-warn');
+    log(`⏸ Motor pausado. Posición guardada en grupo #${currentIndex + 1}.`, 'log-warn');
 }
 
 function saltarGrupo(dir) {
