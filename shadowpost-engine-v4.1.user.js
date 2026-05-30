@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         ShadowPost Pro v4.1 — Stealth Engine + Imágenes Múltiples
+// @name         ShadowPost Pro v4.2 — Motor Sigiloso + Preview
 // @namespace    http://tampermonkey.net/
-// @version      4.1
-// @description  Publica automáticamente con variaciones de texto y una imagen aleatoria de la galería. Sincronizado con ShadowPost Dashboard.
+// @version      4.2
+// @description  Publica automáticamente con variaciones de texto e imagen, guarda URL del post para preview.
 // @author       ShadowPost Technologies
 // @match        https://m.facebook.com/groups/*
 // @match        https://www.facebook.com/groups/*
@@ -13,312 +13,160 @@
 (function () {
     'use strict';
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // CONFIGURACIÓN
-    // ═══════════════════════════════════════════════════════════════════════
-    const ESPERA_INICIAL_MIN = 4000;   // 4 segundos
-    const ESPERA_INICIAL_MAX = 9000;   // 9 segundos
+    const ESPERA_INICIAL_MIN = 4000;
+    const ESPERA_INICIAL_MAX = 9000;
     const DELAY_LETRA_MIN = 60;
     const DELAY_LETRA_MAX = 220;
     const PAUSA_REVISION_MIN = 3000;
     const PAUSA_REVISION_MAX = 7000;
     const PAUSA_POST_PUBLICACION = 3000;
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // UTILIDADES
-    // ═══════════════════════════════════════════════════════════════════════
-    function esperar(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    function esperar(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+    function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function log(msg) { console.log(`%c🥷 ShadowPost %c${msg}`, 'color:#00d4aa;font-weight:bold', 'color:#e6edf3'); }
 
-    function rnd(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    function leerVariaciones() { try { return JSON.parse(localStorage.getItem('sp_copies') || '[]'); } catch { return []; } }
+    function leerIndice() { return parseInt(localStorage.getItem('sp_idx') || '0'); }
+    function escribirIndice(n) { localStorage.setItem('sp_idx', String(n)); }
+    function leerCola() { try { return JSON.parse(localStorage.getItem('sp_queue') || '[]'); } catch { return []; } }
+    function escribirCola(arr) { localStorage.setItem('sp_queue', JSON.stringify(arr)); }
+    function botActivo() { return localStorage.getItem('sp_bot_active') === 'true'; }
+    function leerGalería() { try { return JSON.parse(localStorage.getItem('sp_gallery') || '[]'); } catch { return []; } }
 
-    function log(msg) {
-        console.log(`%c🥷 ShadowPost %c${msg}`, 'color:#00d4aa;font-weight:bold', 'color:#e6edf3');
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // LEER ESTADO DESDE LOCALSTORAGE (sincronizado con el dashboard)
-    // ═══════════════════════════════════════════════════════════════════════
-    function leerVariaciones() {
-        try {
-            return JSON.parse(localStorage.getItem('sp_copies') || '[]');
-        } catch {
-            return [];
-        }
-    }
-
-    function leerIndice() {
-        return parseInt(localStorage.getItem('sp_idx') || '0');
-    }
-
-    function escribirIndice(n) {
-        localStorage.setItem('sp_idx', String(n));
-    }
-
-    function leerCola() {
-        try {
-            return JSON.parse(localStorage.getItem('sp_queue') || '[]');
-        } catch {
-            return [];
-        }
-    }
-
-    function escribirCola(arr) {
-        localStorage.setItem('sp_queue', JSON.stringify(arr));
-    }
-
-    function botActivo() {
-        return localStorage.getItem('sp_bot_active') === 'true';
-    }
-
-    // Leer la galería de imágenes (array de objetos { name, dataURL })
-    function leerGalería() {
-        try {
-            return JSON.parse(localStorage.getItem('sp_gallery') || '[]');
-        } catch {
-            return [];
-        }
-    }
-
-    // Selecciona una variación de texto rotativa según el índice actual
     function seleccionarVariacion() {
         const copies = leerVariaciones();
-        if (!copies.length) {
-            log('❌ No hay variaciones de texto. Genera o guarda manualmente desde el dashboard.');
-            return null;
-        }
+        if (!copies.length) { log('❌ No hay variaciones.'); return null; }
         const idx = leerIndice();
         const variacion = copies[idx % copies.length];
-        log(`📝 Variación seleccionada: #${(idx % copies.length) + 1} de ${copies.length}`);
+        log(`📝 Variación #${(idx % copies.length) + 1}`);
         return variacion;
     }
 
-    // Selecciona una imagen aleatoria de la galería (si existe)
     function seleccionarImagenAleatoria() {
         const galeria = leerGalería();
-        if (!galeria.length) {
-            log('⚠️ No hay imágenes en la galería. Se publicará solo texto.');
-            return null;
-        }
+        if (!galeria.length) { log('⚠️ No hay imágenes.'); return null; }
         const idx = Math.floor(Math.random() * galeria.length);
-        const img = galeria[idx];
-        log(`🖼️ Imagen seleccionada: ${img.name}`);
-        return img;
+        log(`🖼️ Imagen: ${galeria[idx].name}`);
+        return galeria[idx];
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // SUBIR IMAGEN A FACEBOOK (simula clic humano en el botón de foto)
-    // ═══════════════════════════════════════════════════════════════════════
     async function subirImagen(dataURL) {
-        // Convertir dataURL a Blob
-        const fetchBlob = async (url) => {
-            const res = await fetch(url);
-            return res.blob();
-        };
-        const blob = await fetchBlob(dataURL);
+        const res = await fetch(dataURL);
+        const blob = await res.blob();
         const file = new File([blob], "flyer.jpg", { type: "image/jpeg" });
 
-        // Buscar el input de archivo (botón "Agregar foto")
         let fileInput = document.querySelector('input[type="file"][accept*="image"]');
         if (!fileInput) {
-            // Intentar encontrar un botón que diga "Foto/Video" y hacer clic para que aparezca el input
             const botones = Array.from(document.querySelectorAll('button, [role="button"]'));
-            const botonFoto = botones.find(btn => {
-                const texto = (btn.textContent || '').toLowerCase();
-                return texto.includes('foto') || texto.includes('photo') || texto.includes('imagen');
-            });
-            if (botonFoto) {
-                log('📸 Haciendo clic en botón de foto...');
-                botonFoto.click();
-                await esperar(1500);
-                fileInput = document.querySelector('input[type="file"][accept*="image"]');
-            }
+            const botonFoto = botones.find(btn => (btn.textContent || '').toLowerCase().includes('foto'));
+            if (botonFoto) { botonFoto.click(); await esperar(1500); fileInput = document.querySelector('input[type="file"][accept*="image"]'); }
         }
+        if (!fileInput) { log('❌ No se encontró botón de imagen'); return false; }
 
-        if (!fileInput) {
-            log('❌ No se encontró el botón para subir imagen. Se publicará solo texto.');
-            return false;
-        }
-
-        // Inyectar el archivo
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         fileInput.files = dataTransfer.files;
         fileInput.dispatchEvent(new Event('change', { bubbles: true }));
-        log('⬆️ Imagen adjuntada al post');
+        log('⬆️ Imagen adjuntada');
         await esperar(2000);
         return true;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // ESCRITURA HUMANA (letra por letra con pausas aleatorias)
-    // ═══════════════════════════════════════════════════════════════════════
     async function escribirComoHumano(elemento, texto) {
         elemento.focus();
         await esperar(rnd(300, 700));
-
         for (let i = 0; i < texto.length; i++) {
             const char = texto[i];
-            // Eventos realistas
             elemento.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
             elemento.dispatchEvent(new KeyboardEvent('keypress', { key: char, bubbles: true }));
-
-            if (elemento.tagName === 'TEXTAREA') {
-                elemento.value += char;
-            } else {
-                elemento.textContent += char;
-            }
-
+            if (elemento.tagName === 'TEXTAREA') elemento.value += char;
+            else elemento.textContent += char;
             elemento.dispatchEvent(new Event('input', { bubbles: true }));
             elemento.dispatchEvent(new Event('change', { bubbles: true }));
             elemento.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
-
             let delay = rnd(DELAY_LETRA_MIN, DELAY_LETRA_MAX);
-            if (Math.random() < 0.08) delay += rnd(400, 900); // pausa pensante
+            if (Math.random() < 0.08) delay += rnd(400, 900);
             await esperar(delay);
         }
         log(`✍️ Texto escrito: ${texto.length} caracteres.`);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // BUSCAR CUADRO DE TEXTO (adaptado a Facebook)
-    // ═══════════════════════════════════════════════════════════════════════
     async function encontrarAreaTexto(intentos = 15) {
         for (let i = 0; i < intentos; i++) {
-            const selectores = [
-                '[role="textbox"]',
-                'textarea[name="xc_message"]',
-                'textarea',
-                '[contenteditable="true"]',
-                '[data-lexical-editor="true"]'
-            ];
+            const selectores = ['[role="textbox"]', 'textarea[name="xc_message"]', 'textarea', '[contenteditable="true"]'];
             for (const sel of selectores) {
                 const el = document.querySelector(sel);
-                if (el && el.offsetParent !== null) {
-                    log(`🎯 Cuadro de texto encontrado con: ${sel}`);
-                    return el;
-                }
+                if (el && el.offsetParent !== null) { log(`🎯 Encontrado: ${sel}`); return el; }
             }
             await esperar(2000);
         }
         return null;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // BUSCAR BOTÓN PUBLICAR
-    // ═══════════════════════════════════════════════════════════════════════
     async function encontrarBotonPublicar(intentos = 10) {
         for (let i = 0; i < intentos; i++) {
             const botones = Array.from(document.querySelectorAll('button, [role="button"]'));
             const boton = botones.find(btn => {
                 const txt = (btn.textContent || '').toLowerCase().trim();
-                return txt === 'publicar' || txt === 'post' || txt === 'compartir' || txt === 'share';
+                return txt === 'publicar' || txt === 'post' || txt === 'compartir';
             });
-            if (boton && !boton.disabled) {
-                log('🚀 Botón "Publicar" localizado.');
-                return boton;
-            }
+            if (boton && !boton.disabled) { log('🚀 Botón "Publicar" encontrado'); return boton; }
             await esperar(1500);
         }
         return null;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // AVANZAR ÍNDICE Y COLA (al terminar una publicación)
-    // ═══════════════════════════════════════════════════════════════════════
     function avanzarIndice() {
         const actual = leerIndice();
         const nuevo = actual + 1;
         escribirIndice(nuevo);
-
         const cola = leerCola();
-        if (cola.length > 0) {
-            cola.shift();   // eliminar el grupo actual
-            escribirCola(cola);
-        }
-        log(`✅ Grupo completado. Nuevo índice: ${nuevo}. Cola restante: ${cola.length}`);
+        if (cola.length > 0) { cola.shift(); escribirCola(cola); }
+        log(`✅ Grupo completado. Nuevo índice: ${nuevo}`);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // ALGORITMO PRINCIPAL
-    // ═══════════════════════════════════════════════════════════════════════
     async function publicarEnGrupo() {
-        log('🟢 Motor iniciado en este grupo.');
-
-        // 1. Verificar que el bot está activo
-        if (!botActivo()) {
-            log('⏸️ Bot inactivo. Presiona PLAY en el dashboard.');
-            return false;
-        }
-
-        // 2. Obtener texto e imagen
+        log('🟢 Motor iniciado.');
+        if (!botActivo()) { log('⏸️ Inactivo'); return false; }
         const texto = seleccionarVariacion();
         if (!texto) return false;
         const imagen = seleccionarImagenAleatoria();
 
-        // 3. Espera inicial (simular lectura)
-        const esperaInicial = rnd(ESPERA_INICIAL_MIN, ESPERA_INICIAL_MAX);
-        log(`⏳ Esperando ${(esperaInicial/1000).toFixed(1)}s antes de publicar...`);
-        await esperar(esperaInicial);
-
-        // 4. Encontrar área de texto
+        await esperar(rnd(ESPERA_INICIAL_MIN, ESPERA_INICIAL_MAX));
         const areaTexto = await encontrarAreaTexto();
-        if (!areaTexto) {
-            log('❌ No se encontró el cuadro de texto. ¿El grupo permite publicaciones?');
-            return false;
-        }
+        if (!areaTexto) { log('❌ No hay cuadro de texto'); return false; }
 
-        // 5. Si hay imagen, subirla primero (Facebook permite adjuntar antes de escribir)
-        if (imagen) {
-            await subirImagen(imagen.dataURL);
-        }
-
-        // 6. Escribir el texto
+        if (imagen) await subirImagen(imagen.dataURL);
         await escribirComoHumano(areaTexto, texto);
+        await esperar(rnd(PAUSA_REVISION_MIN, PAUSA_REVISION_MAX));
 
-        // 7. Pausa de revisión
-        const pausaRevision = rnd(PAUSA_REVISION_MIN, PAUSA_REVISION_MAX);
-        log(`👀 Revisando texto durante ${(pausaRevision/1000).toFixed(1)}s...`);
-        await esperar(pausaRevision);
-
-        // 8. Buscar y hacer clic en Publicar
         const botonPublicar = await encontrarBotonPublicar();
-        if (!botonPublicar) {
-            log('❌ No se encontró el botón "Publicar".');
-            return false;
-        }
+        if (!botonPublicar) { log('❌ No hay botón Publicar'); return false; }
         botonPublicar.click();
-        log('📤 Publicación enviada.');
+        log('📤 Publicado');
 
-        // 9. Esperar a que se publique
+        // Guardar la URL del post recién creado para el botón Preview
+        await esperar(4000);
+        const postLink = document.querySelector('a[href*="/posts/"]:first-child')?.href;
+        if (postLink) {
+            localStorage.setItem('sp_last_post_url', postLink);
+            log(`🔗 URL del post guardada: ${postLink}`);
+        }
+
         await esperar(PAUSA_POST_PUBLICACION);
-
-        // 10. Avanzar índice y cola
         avanzarIndice();
 
-        // 11. Navegar al siguiente grupo si existe en la cola
         const cola = leerCola();
         if (cola.length > 0 && botActivo()) {
-            const nextUrl = cola[0];
-            log(`➡️ Navegando al siguiente grupo en 3 segundos: ${nextUrl}`);
+            log(`➡️ Siguiente grupo en 3s: ${cola[0]}`);
             await esperar(3000);
-            window.location.href = nextUrl;
+            window.location.href = cola[0];
         } else {
-            log('🏁 Cola completada o motor detenido.');
+            log('🏁 Cola completada');
             localStorage.setItem('sp_bot_active', 'false');
         }
         return true;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    // PUNTO DE ENTRADA (cuando carga el grupo)
-    // ═══════════════════════════════════════════════════════════════════════
-    window.addEventListener('load', async () => {
-        // Pequeña espera para que Facebook termine de cargar su interfaz
-        await esperar(2500);
-        publicarEnGrupo();
-    });
+    window.addEventListener('load', async () => { await esperar(2500); publicarEnGrupo(); });
 })();
