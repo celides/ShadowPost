@@ -39,7 +39,6 @@
             overflow-x: hidden;
         }
 
-        /* ── FONDO ANIMADO ── */
         body::before {
             content: '';
             position: fixed;
@@ -51,7 +50,6 @@
             z-index: 0;
         }
 
-        /* ── LOGIN ── */
         #login-screen {
             position: fixed;
             inset: 0;
@@ -169,7 +167,6 @@
             line-height: 1.5;
         }
 
-        /* ── DASHBOARD ── */
         #dashboard {
             display: none;
             min-height: 100vh;
@@ -178,7 +175,6 @@
             z-index: 1;
         }
 
-        /* ── HEADER ── */
         .header {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
@@ -235,7 +231,6 @@
         .btn-icon:hover { border-color: var(--border-lit); color: var(--text-1); }
         .btn-icon.danger { color: var(--red); border-color: rgba(248,81,73,.25); }
 
-        /* ── PROGRESS BAR ── */
         .progress-strip {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
@@ -271,7 +266,6 @@
             transition: width .5s ease;
         }
 
-        /* ── MAIN GRID ── */
         .main-content {
             padding: 1rem 1rem 6rem;
             display: flex;
@@ -289,7 +283,6 @@
             }
         }
 
-        /* ── CARDS ── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -325,7 +318,6 @@
             font-size: .65rem;
         }
 
-        /* ── TEXTAREA ── */
         .textarea {
             width: 100%;
             background: var(--bg-deep);
@@ -346,7 +338,6 @@
             box-shadow: 0 0 0 3px var(--accent-dim);
         }
 
-        /* ── PHONE INPUTS ── */
         .phones-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -387,7 +378,6 @@
         .phone-input.gold { color: var(--gold); }
         .phone-input.gold:focus { border-color: var(--gold); }
 
-        /* ── BUTTONS ── */
         .btn-generate {
             width: 100%;
             background: var(--accent-dim);
@@ -406,7 +396,6 @@
         .btn-generate:active { transform: scale(.98); }
         .btn-generate:disabled { opacity: .5; cursor: not-allowed; }
 
-        /* ── AI OUTPUTS ── */
         #ai-outputs { margin-top: .75rem; display: flex; flex-direction: column; gap: .5rem; }
 
         .variation-card {
@@ -444,7 +433,6 @@
 
         .btn-copy-var:hover { color: var(--accent); border-color: var(--accent); }
 
-        /* ── SELECT ── */
         .sp-select {
             width: 100%;
             background: var(--bg-deep);
@@ -462,7 +450,6 @@
             background-position: right .75rem center;
         }
 
-        /* ── GROUPS LIST ── */
         .groups-container {
             max-height: 200px;
             overflow-y: auto;
@@ -502,7 +489,6 @@
 
         .group-row input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
 
-        /* ── FILE INPUT ── */
         .file-input-wrapper {
             margin-top: .75rem;
         }
@@ -524,7 +510,6 @@
             margin-right: .5rem;
         }
 
-        /* ── CONTROL PANEL (Card 3) ── */
         .motor-status-box {
             background: var(--bg-deep);
             border: 1px solid var(--border);
@@ -548,7 +533,6 @@
         .status-paused  { color: var(--amber); }
         .status-running { color: var(--accent); }
 
-        /* Indicador pulsante */
         .dot {
             display: inline-block;
             width: 6px; height: 6px;
@@ -563,7 +547,6 @@
 
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-        /* ── CONTROL BUTTONS ── */
         .control-row {
             display: grid;
             grid-template-columns: auto 1fr 1fr auto;
@@ -612,7 +595,6 @@
             display: none;
         }
 
-        /* ── LOGS ── */
         .logs-box {
             background: var(--bg-deep);
             border: 1px solid var(--border);
@@ -632,7 +614,6 @@
         .log-warn    { color: var(--amber); }
         .log-error   { color: var(--red); }
 
-        /* ── ADMIN PANEL ── */
         #admin-panel {
             display: none;
             background: var(--bg-card);
@@ -721,7 +702,6 @@
             cursor: pointer;
         }
 
-        /* ── MODAL FLYER ── */
         #flyer-modal {
             display: none;
             position: fixed;
@@ -759,18 +739,15 @@
             font-size: 1rem;
         }
 
-        /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border-lit); border-radius: 4px; }
 
-        /* ── UTILS ── */
         .hidden { display: none !important; }
         .mt-1 { margin-top: .5rem; }
         .mt-2 { margin-top: .75rem; }
         .divider { border: none; border-top: 1px solid var(--border); margin: .75rem 0; }
 
-        /* ── TOAST ── */
         #toast {
             position: fixed;
             bottom: 1.5rem;
@@ -791,7 +768,6 @@
 
         #toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* ── EQ ANIMATION ── */
         .eq-wrap { display: none; align-items: flex-end; gap: 2px; height: 14px; }
         .eq-wrap.active { display: flex; }
         .eq-bar-a { width: 3px; border-radius: 2px; background: var(--accent); animation: eqA .7s ease infinite; }
@@ -799,13 +775,60 @@
         .eq-bar-a:nth-child(2){ animation-delay:.2s }
         .eq-bar-a:nth-child(3){ animation-delay:.1s }
         @keyframes eqA { 0%,100%{height:3px} 50%{height:14px} }
+
+        /* Estilos para la guía neon (resaltado) */
+        .neon-guide-highlight {
+            outline: 2px solid var(--gold);
+            box-shadow: 0 0 12px var(--gold), 0 0 8px var(--accent);
+            transition: all 0.2s ease;
+            animation: neonPulse 1.2s infinite;
+        }
+        @keyframes neonPulse {
+            0% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+            50% { outline-color: var(--accent); box-shadow: 0 0 20px var(--accent), 0 0 8px var(--gold); }
+            100% { outline-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+        }
+        /* Panel manual offline */
+        .manual-panel {
+            margin-top: 1rem;
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+        .manual-panel summary {
+            font-size: 0.7rem;
+            color: var(--text-2);
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+        .manual-textarea {
+            width: 100%;
+            background: var(--bg-deep);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem;
+            color: var(--text-1);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .gallery-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     PANTALLA DE LOGIN
-════════════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="login-screen">
     <div class="login-card">
         <div class="login-logo">
@@ -813,36 +836,22 @@
             <h1>SHADOWPOST PRO</h1>
             <p>Sistema de Prospección Digital v4</p>
         </div>
-
         <label class="field-label">Clave de Acceso</label>
-        <input type="password" id="access-key" class="field-input" placeholder="••••••••••••"
-               onkeydown="if(event.key==='Enter') verificarAcceso()">
-
+        <input type="password" id="access-key" class="field-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') verificarAcceso()">
         <button class="btn-primary" onclick="verificarAcceso()">Iniciar Sesión</button>
-
         <p id="login-error" class="login-error">⚠ Clave inválida o licencia vencida.</p>
-
-        <div class="login-plan-info">
-            ¿Necesitas acceso? Contacta al administrador<br>
-            para obtener tu clave de licencia mensual.
-        </div>
+        <div class="login-plan-info">¿Necesitas acceso? Contacta al administrador<br>para obtener tu clave de licencia mensual.</div>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     MODAL FLYER
-════════════════════════════════════════ -->
+<!-- MODAL FLYER -->
 <div id="flyer-modal" onclick="cerrarFlyerModal()">
     <span class="close-modal">✕</span>
     <img id="flyer-img" src="" alt="Flyer">
 </div>
 
-<!-- ══════════════════════════════════════
-     DASHBOARD
-════════════════════════════════════════ -->
+<!-- DASHBOARD -->
 <div id="dashboard">
-
-    <!-- HEADER -->
     <header class="header">
         <div class="header-brand">
             <h1>SHADOWPOST PRO</h1>
@@ -855,7 +864,6 @@
         </div>
     </header>
 
-    <!-- PROGRESS BAR -->
     <div class="progress-strip">
         <div class="progress-info">
             <span>▶ <span id="track-name" class="group-name">Sin grupos</span></span>
@@ -866,161 +874,105 @@
         </div>
     </div>
 
-    <!-- MAIN -->
     <div class="main-content">
-
-        <!-- ── CARD 1: IA ── -->
+        <!-- CARD 1: IA -->
         <div class="card">
-            <div class="card-title">
-                <span class="num">1</span>
-                IA Neuroventas
-            </div>
-
+            <div class="card-title"><span class="num">1</span> IA Neuroventas</div>
             <label class="field-label mt-1">Oferta base</label>
-            <textarea id="base-prompt" class="textarea" rows="4"
-                placeholder="Ej: Internet Megacable 100 Megas, TV, llamadas ilimitadas, $349/mes, instalación gratis..."></textarea>
-
-            <!-- TELÉFONOS (se renderizan dinámicamente según plan) -->
+            <textarea id="base-prompt" class="textarea" rows="4" placeholder="Ej: Internet Megacable 100 Megas, TV, llamadas ilimitadas, $349/mes, instalación gratis..."></textarea>
             <div id="phones-grid" class="phones-grid"></div>
-
-            <button id="btn-generate" class="btn-generate" onclick="generarVariacionesIA()">
-                ✦ Generar con IA
-            </button>
-
+            <button id="btn-generate" class="btn-generate" onclick="generarVariacionesIA()">✦ Generar con IA</button>
             <div id="ai-outputs"></div>
+            <!-- MODO MANUAL OFFLINE -->
+            <details class="manual-panel">
+                <summary>✏️ Modo manual (sin IA) - Escribe tus 3 variaciones</summary>
+                <textarea id="manual-var-1" class="manual-textarea" rows="2" placeholder="Variación 1: Oferta con WhatsApp..."></textarea>
+                <textarea id="manual-var-2" class="manual-textarea" rows="2" placeholder="Variación 2: Oferta con imagen..."></textarea>
+                <textarea id="manual-var-3" class="manual-textarea" rows="2" placeholder="Variación 3: Llamada a la acción..."></textarea>
+                <button class="btn-generate" style="margin-top:0;" onclick="guardarVariacionesManuales()">💾 Guardar variaciones manuales</button>
+            </details>
         </div>
 
-        <!-- ── CARD 2: GRUPOS ── -->
+        <!-- CARD 2: GRUPOS + IMÁGENES -->
         <div class="card">
-            <div class="card-title">
-                <span class="num">2</span>
-                Rutas Geográficas
-            </div>
-
+            <div class="card-title"><span class="num">2</span> Rutas Geográficas</div>
             <select id="zona-select" class="sp-select" onchange="cambiarZona()">
                 <option value="all">Todos los grupos</option>
                 <option value="manana">Ruta Mañana (Sta. Bárbara)</option>
                 <option value="tarde">Ruta Mediodía (San Miguel / Calesa)</option>
                 <option value="premium">Ruta Premium (Juriquilla)</option>
             </select>
-
             <div id="groups-container" class="groups-container mt-1"></div>
-
             <div class="file-input-wrapper mt-2">
-                <label class="field-label">Flyer multimedia</label>
-                <input type="file" id="gallery-input" accept="image/*" onchange="onFlyerCargado()">
+                <label class="field-label">Galería multimedia (elige varias imágenes)</label>
+                <input type="file" id="gallery-input" multiple accept="image/*" onchange="onGaleriaCargada()">
+                <div id="gallery-preview" class="gallery-thumbnails"></div>
             </div>
-
             <div id="flyer-preview-row" class="hidden mt-1" style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
-                <span style="font-size:.7rem;color:var(--text-3)">Flyer listo</span>
-                <button class="btn-icon" onclick="verFlyerActual()">Ver imagen</button>
+                <span style="font-size:.7rem;color:var(--text-3)">Imágenes listas</span>
+                <button class="btn-icon" onclick="verFlyerActual()">Ver imagen aleatoria</button>
             </div>
         </div>
 
-        <!-- ── CARD 3: CONTROL ── -->
+        <!-- CARD 3: CONTROL -->
         <div class="card">
             <div class="card-title" style="justify-content:space-between;">
-                <span style="display:flex;align-items:center;gap:.5rem;">
-                    <span class="num">3</span>
-                    Control de Motor
-                </span>
-                <div id="eq-anim" class="eq-wrap">
-                    <div class="eq-bar-a"></div>
-                    <div class="eq-bar-a"></div>
-                    <div class="eq-bar-a"></div>
-                </div>
+                <span style="display:flex;align-items:center;gap:.5rem;"><span class="num">3</span> Control de Motor</span>
+                <div id="eq-anim" class="eq-wrap"><div class="eq-bar-a"></div><div class="eq-bar-a"></div><div class="eq-bar-a"></div></div>
             </div>
-
             <div class="motor-status-box">
-                <div class="motor-stat">
-                    <span class="label">ESTADO</span>
-                    <span id="motor-status" class="value status-paused">
-                        <span class="dot amber"></span>EN PAUSA
-                    </span>
-                </div>
-                <div class="motor-stat">
-                    <span class="label">POSICIÓN</span>
-                    <span class="value" style="color:var(--text-2)">
-                        <span id="cur-idx">0</span> / <span id="tot-idx">0</span>
-                    </span>
-                </div>
-                <div class="motor-stat">
-                    <span class="label">WAKELOCK</span>
-                    <span id="wl-status-text" class="value" style="color:var(--text-3)">Inactivo</span>
-                </div>
+                <div class="motor-stat"><span class="label">ESTADO</span><span id="motor-status" class="value status-paused"><span class="dot amber"></span>EN PAUSA</span></div>
+                <div class="motor-stat"><span class="label">POSICIÓN</span><span class="value"><span id="cur-idx">0</span> / <span id="tot-idx">0</span></span></div>
+                <div class="motor-stat"><span class="label">WAKELOCK</span><span id="wl-status-text" class="value" style="color:var(--text-3)">Inactivo</span></div>
             </div>
-
             <div class="control-row">
-                <button class="btn-skip" onclick="saltarGrupo(-1)" title="Anterior">⏮</button>
+                <button class="btn-skip" onclick="saltarGrupo(-1)">⏮</button>
                 <button id="btn-play" class="btn-play" onclick="lanzarMotor()">▶ PLAY</button>
                 <button id="btn-pause" class="btn-pause-ctrl" onclick="detenerMotor()">⏸ PAUSA</button>
-                <button class="btn-skip" onclick="saltarGrupo(1)" title="Siguiente">⏭</button>
+                <button class="btn-skip" onclick="saltarGrupo(1)">⏭</button>
             </div>
-
-            <div id="system-logs" class="logs-box">
-                <span class="log-info">> Consola de telemetría lista...</span><br>
-            </div>
+            <div id="system-logs" class="logs-box"><span class="log-info">> Consola de telemetría lista...</span><br></div>
         </div>
 
-        <!-- ── CARD 4: ADMIN (solo admin) ── -->
+        <!-- CARD 4: ADMIN -->
         <div id="admin-panel">
-            <div class="admin-title">
-                ⚙ Panel Administrador
-            </div>
-
+            <div class="admin-title">⚙ Panel Administrador</div>
             <label class="field-label">Generar clave de cliente</label>
             <div class="key-generator">
                 <input type="text" id="client-name-input" class="key-gen-input" placeholder="Nombre del cliente...">
                 <button class="btn-gen-key" onclick="generarClaveCliente()">+ Generar</button>
             </div>
-
             <div style="overflow-x:auto;">
                 <table class="keys-table" id="keys-table">
-                    <thead>
-                        <tr>
-                            <th>CLIENTE</th>
-                            <th>CLAVE</th>
-                            <th>VENCE</th>
-                            <th>NUMS</th>
-                            <th></th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>CLIENTE</th><th>CLAVE</th><th>VENCE</th><th>NUMS</th><th></th></tr></thead>
                     <tbody id="keys-tbody"></tbody>
                 </table>
             </div>
-
-            <p style="font-size:.62rem;color:var(--text-3);margin-top:.75rem;">
-                Las claves se generan localmente. Están encriptadas y son únicas por cliente. Compártelas manualmente.
-            </p>
+            <p style="font-size:.62rem;color:var(--text-3);margin-top:.75rem;">Las claves se generan localmente. Están encriptadas y son únicas por cliente. Compártelas manualmente.</p>
         </div>
-
-    </div><!-- /main-content -->
-</div><!-- /dashboard -->
-
-<!-- TOAST -->
+    </div>
+</div>
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  SHADOWPOST PRO v4 — SCRIPT PRINCIPAL
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// SHADOWPOST PRO v4 — SCRIPT COMPLETO (CON GUÍA NEON + MODO MANUAL + MÚLTIPLES IMÁGENES)
+// ═══════════════════════════════════════════════════════════════════════════
 
-// ── CONFIG ──────────────────────────────────────────
-const ADMIN_KEY = "celides13";       // Clave admin (acceso total)
-const LEGACY_KEY = "celides10";      // Clave admin alternativa
-
-// Plan del admin: 4 teléfonos activos
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const ADMIN_KEY = "celides13";
+const LEGACY_KEY = "celides10";
 const PLAN_ADMIN = { telefonos: 4, label: "ADMIN" };
 
-// ── ESTADO GLOBAL ────────────────────────────────────
-let currentRole   = null;       // 'admin' | 'client'
-let currentPlan   = null;       // objeto del plan activo
+let currentRole   = null;
+let currentPlan   = null;
 let currentIndex  = 0;
 let motorInterval = null;
 let wakeLock      = null;
-let clientKeys    = {};         // { clave: { nombre, vence, telefonos } }
+let clientKeys    = {};
+let pollingInterval = null;
 
-// ── GRUPOS BASE ──────────────────────────────────────
+// Grupos base
 const baseGrupos = {
     manana: [
         { name: "Ventas La Estancia",   url: "https://m.facebook.com/groups/estancia" },
@@ -1042,7 +994,7 @@ const baseGrupos = {
     ]
 };
 
-// ── UTILIDADES ───────────────────────────────────────
+// ── UTILIDADES ──────────────────────────────────────────────────────────────
 function toast(msg, dur=2500) {
     const el = document.getElementById('toast');
     el.textContent = msg;
@@ -1061,123 +1013,77 @@ function obtenerHuella() {
     return btoa(navigator.userAgent).substring(8, 20).toLowerCase();
 }
 
-// ── SISTEMA DE CLAVES ────────────────────────────────
-// Las claves se generan sin base de datos.
-// Formato: SP-[HASH del nombre]-[MES]-[AÑO]
-// Esto permite verificarlas matemáticamente sin servidor.
-
+// ── SISTEMA DE CLAVES ──────────────────────────────────────────────────────
 function generarClave(nombre) {
     const ahora = new Date();
     const mes   = String(ahora.getMonth() + 1).padStart(2,'0');
     const anio  = String(ahora.getFullYear()).slice(-2);
-    // Hash simple del nombre: suma de charCodes
     let hash = 0;
-    for (let i = 0; i < nombre.length; i++) {
-        hash = ((hash << 5) - hash + nombre.charCodeAt(i)) & 0xffffffff;
-    }
+    for (let i = 0; i < nombre.length; i++) hash = ((hash << 5) - hash + nombre.charCodeAt(i)) & 0xffffffff;
     const hashStr = Math.abs(hash).toString(36).toUpperCase().padStart(4,'0').slice(0,4);
     return `SP-${hashStr}${mes}${anio}`;
 }
 
 function verificarClave(clave) {
     if (!clave) return null;
-
-    // Admin siempre pasa
-    if (clave === ADMIN_KEY || clave === LEGACY_KEY) {
-        return { role: 'admin', telefonos: 4 };
-    }
-
-    // Verificar si es una clave de cliente válida (formato SP-XXXX0526)
+    if (clave === ADMIN_KEY || clave === LEGACY_KEY) return { role: 'admin', telefonos: 4 };
     const match = clave.match(/^SP-([A-Z0-9]{4})(\d{2})(\d{2})$/);
     if (!match) return null;
-
-    const mesClave = parseInt(match[2]);
-    const anioClave = parseInt('20' + match[3]);
+    const mesClave = parseInt(match[2]), anioClave = parseInt('20'+match[3]);
     const ahora = new Date();
-    const mesActual  = ahora.getMonth() + 1;
-    const anioActual = ahora.getFullYear();
-
-    // Clave válida si es del mes actual o el anterior
-    const claveValida =
-        (anioClave === anioActual && mesClave === mesActual) ||
-        (anioClave === anioActual && mesClave === mesActual - 1) ||
-        (anioActual === anioClave + 1 && mesClave === 12 && mesActual === 1);
-
+    const mesActual = ahora.getMonth()+1, anioActual = ahora.getFullYear();
+    const claveValida = (anioClave === anioActual && mesClave === mesActual) ||
+                        (anioClave === anioActual && mesClave === mesActual-1) ||
+                        (anioActual === anioClave+1 && mesClave === 12 && mesActual === 1);
     if (!claveValida) return null;
-
-    // Buscar en claves guardadas cuántos teléfonos tiene este cliente
     const datos = clientKeys[clave];
     return { role: 'client', telefonos: datos ? datos.telefonos : 1 };
 }
 
-// ── LOGIN ─────────────────────────────────────────────
+// ── LOGIN ───────────────────────────────────────────────────────────────────
 function verificarAcceso() {
     const clave = document.getElementById('access-key').value.trim();
     const resultado = verificarClave(clave);
-
-    if (!resultado) {
-        document.getElementById('login-error').style.display = 'block';
-        return;
-    }
-
+    if (!resultado) { document.getElementById('login-error').style.display = 'block'; return; }
     currentRole = resultado.role;
     currentPlan = { telefonos: resultado.telefonos };
-
     localStorage.setItem('sp_auth', clave);
     localStorage.setItem('sp_role', resultado.role);
-
     currentIndex = parseInt(localStorage.getItem('sp_idx') || '0');
     clientKeys   = JSON.parse(localStorage.getItem('sp_keys') || '{}');
-
     iniciarDashboard();
 }
 
 function iniciarDashboard() {
-    document.getElementById('login-screen').style.display  = 'none';
-    document.getElementById('dashboard').style.display     = 'flex';
-
-    // Header
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'flex';
     document.getElementById('device-id').textContent = obtenerHuella();
     const badge = document.getElementById('role-badge');
     if (currentRole === 'admin') {
         badge.textContent = '⚙ ADMIN';
-        badge.className   = 'badge badge-admin';
+        badge.className = 'badge badge-admin';
         document.getElementById('admin-panel').style.display = 'block';
         renderizarTablaClaves();
     } else {
         badge.textContent = '✦ ACTIVO';
-        badge.className   = 'badge badge-user';
+        badge.className = 'badge badge-user';
     }
-
-    // Construir inputs de teléfonos
     renderizarTelefonos();
+    cargarGaleriaDesdeStorage();  // mostrar miniaturas guardadas
     cambiarZona();
 }
 
-// ── TELÉFONOS DINÁMICOS ───────────────────────────────
+// ── TELÉFONOS ──────────────────────────────────────────────────────────────
 function renderizarTelefonos() {
-    const grid   = document.getElementById('phones-grid');
-    const total  = currentPlan.telefonos;   // 1–4
-    const saved  = JSON.parse(localStorage.getItem('sp_phones') || '[]');
-
+    const grid = document.getElementById('phones-grid');
+    const total = currentPlan.telefonos;
+    const saved = JSON.parse(localStorage.getItem('sp_phones') || '[]');
     grid.innerHTML = '';
     for (let i = 0; i < total; i++) {
-        const col   = i % 2 === 0 ? 'var(--accent)' : 'var(--gold)';
-        const label = `WhatsApp ${i + 1}`;
-        const val   = saved[i] || '';
-        grid.innerHTML += `
-        <div class="phone-field">
-            <span class="phone-label">${label}</span>
-            <input type="tel" id="tel-${i}"
-                   class="phone-input"
-                   style="color:${col}"
-                   placeholder="52442XXXXXXX"
-                   value="${val}"
-                   onchange="guardarTelefonos()">
-        </div>`;
+        const col = i % 2 === 0 ? 'var(--accent)' : 'var(--gold)';
+        const val = saved[i] || '';
+        grid.innerHTML += `<div class="phone-field"><span class="phone-label">WhatsApp ${i+1}</span><input type="tel" id="tel-${i}" class="phone-input" style="color:${col}" placeholder="52442XXXXXXX" value="${val}" onchange="guardarTelefonos()"></div>`;
     }
-
-    // Asegurar 2 columnas si hay 2+
     grid.style.display = total >= 1 ? 'grid' : 'none';
     grid.style.gridTemplateColumns = total === 1 ? '1fr' : '1fr 1fr';
 }
@@ -1202,116 +1108,160 @@ function obtenerTelefonos() {
     return phones;
 }
 
-// ── GENERACIÓN DE IA ─────────────────────────────────
+// ── GENERACIÓN IA + MODO MANUAL ─────────────────────────────────────────────
 async function generarVariacionesIA() {
     const idea = document.getElementById('base-prompt').value.trim();
     if (!idea) { toast('Escribe tu oferta base primero.'); return; }
-
     const telefonos = obtenerTelefonos();
     if (telefonos.length === 0) { toast('Agrega al menos un número de WhatsApp.'); return; }
-
     const out = document.getElementById('ai-outputs');
     const btn = document.getElementById('btn-generate');
-
-    out.innerHTML = `<div style="font-size:.75rem;color:var(--accent);font-family:'Space Mono',monospace;padding:.5rem 0;">
-        <span style="animation:pulse 1s infinite;display:inline-block;">▌</span> Invocando IA ShadowPost...
-    </div>`;
+    out.innerHTML = `<div style="font-size:.75rem;color:var(--accent);">▌ Invocando IA ShadowPost...</div>`;
     btn.disabled = true;
-
     try {
         const res = await fetch('/api/generate-variations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idea, telefonos })
         });
-
-        if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.error || 'Error del servidor');
-        }
-
+        if (!res.ok) throw new Error('Error del servidor IA');
         const data = await res.json();
         const variaciones = data.variaciones || [];
-
         if (variaciones.length === 0) throw new Error('La IA no devolvió variaciones.');
-
-        out.innerHTML = '';
-        variaciones.forEach((v, i) => {
-            out.innerHTML += `
-            <div class="variation-card">
-                <span class="variation-num">VARIACIÓN ${i + 1}</span>
-                <button class="btn-copy-var" onclick="copiarVariacion(${i})">Copiar</button>
-                <div id="var-text-${i}">${escapeHtml(v)}</div>
-            </div>`;
-        });
-
+        mostrarVariaciones(variaciones);
         localStorage.setItem('sp_copies', JSON.stringify(variaciones));
-        log('Variaciones cargadas correctamente.', 'log-success');
-        toast('✦ 3 variaciones generadas');
-
+        toast('✦ 3 variaciones generadas por IA');
     } catch (err) {
-        out.innerHTML = `<div style="font-size:.75rem;color:var(--red);padding:.4rem 0;">⚠ ${escapeHtml(err.message)}</div>`;
+        out.innerHTML = `<div style="font-size:.75rem;color:var(--red);">⚠ ${err.message}. Usa modo manual.</div>`;
         log(`Error IA: ${err.message}`, 'log-error');
     } finally {
         btn.disabled = false;
     }
 }
 
+function guardarVariacionesManuales() {
+    const v1 = document.getElementById('manual-var-1').value.trim();
+    const v2 = document.getElementById('manual-var-2').value.trim();
+    const v3 = document.getElementById('manual-var-3').value.trim();
+    if (!v1 || !v2 || !v3) { toast('Completa las 3 variaciones manuales'); return; }
+    const variaciones = [v1, v2, v3];
+    mostrarVariaciones(variaciones);
+    localStorage.setItem('sp_copies', JSON.stringify(variaciones));
+    toast('✅ Variaciones manuales guardadas');
+    log('Modo manual: 3 variaciones almacenadas', 'log-success');
+}
+
+function mostrarVariaciones(variaciones) {
+    const out = document.getElementById('ai-outputs');
+    out.innerHTML = '';
+    variaciones.forEach((v, i) => {
+        out.innerHTML += `
+        <div class="variation-card">
+            <span class="variation-num">VARIACIÓN ${i+1}</span>
+            <button class="btn-copy-var" onclick="copiarVariacion(${i})">Copiar</button>
+            <div id="var-text-${i}">${escapeHtml(v)}</div>
+        </div>`;
+    });
+}
+
 function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/\n/g,'<br>');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
 async function copiarVariacion(idx) {
     const el = document.getElementById(`var-text-${idx}`);
     if (!el) return;
-    try {
-        await navigator.clipboard.writeText(el.innerText);
-        toast('✓ Copiado al portapapeles');
-    } catch {
-        toast('Selecciona el texto manualmente.');
+    try { await navigator.clipboard.writeText(el.innerText); toast('✓ Copiado'); } catch { toast('Selecciona manualmente'); }
+}
+
+// ── MÚLTIPLES IMÁGENES (Galería) ───────────────────────────────────────────
+function onGaleriaCargada() {
+    const input = document.getElementById('gallery-input');
+    if (!input.files.length) return;
+    const filesArray = Array.from(input.files);
+    const imagesData = [];
+    let processed = 0;
+    filesArray.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagesData.push({ name: file.name, dataURL: e.target.result });
+            processed++;
+            if (processed === filesArray.length) {
+                localStorage.setItem('sp_gallery', JSON.stringify(imagesData));
+                cargarGaleriaDesdeStorage();
+                toast(`${imagesData.length} imágenes guardadas en galería`);
+                log(`Galería actualizada: ${imagesData.length} imágenes`, 'log-info');
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function cargarGaleriaDesdeStorage() {
+    const stored = localStorage.getItem('sp_gallery');
+    if (!stored) return;
+    const images = JSON.parse(stored);
+    const previewDiv = document.getElementById('gallery-preview');
+    previewDiv.innerHTML = '';
+    images.forEach((img, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = img.dataURL;
+        thumb.className = 'thumb';
+        thumb.title = img.name;
+        thumb.onclick = () => verFlyerConcreto(idx);
+        previewDiv.appendChild(thumb);
+    });
+    document.getElementById('flyer-preview-row').classList.remove('hidden');
+}
+
+function verFlyerActual() {
+    const stored = localStorage.getItem('sp_gallery');
+    if (!stored) { toast('No hay imágenes'); return; }
+    const images = JSON.parse(stored);
+    if (!images.length) return;
+    const randomIdx = Math.floor(Math.random() * images.length);
+    verFlyerConcreto(randomIdx);
+}
+
+function verFlyerConcreto(idx) {
+    const stored = localStorage.getItem('sp_gallery');
+    if (!stored) return;
+    const images = JSON.parse(stored);
+    if (images[idx]) {
+        document.getElementById('flyer-img').src = images[idx].dataURL;
+        document.getElementById('flyer-modal').classList.add('open');
     }
 }
 
-// ── GRUPOS ────────────────────────────────────────────
+function cerrarFlyerModal() {
+    document.getElementById('flyer-modal').classList.remove('open');
+}
+
+// ── GRUPOS ─────────────────────────────────────────────────────────────────
 function obtenerGruposZona(zona) {
-    if (zona === 'all') {
-        return [...baseGrupos.manana, ...baseGrupos.tarde, ...baseGrupos.premium];
-    }
+    if (zona === 'all') return [...baseGrupos.manana, ...baseGrupos.tarde, ...baseGrupos.premium];
     return baseGrupos[zona] || [];
 }
 
 function cambiarZona() {
-    const zona    = document.getElementById('zona-select').value;
-    const grupos  = obtenerGruposZona(zona);
-    const cont    = document.getElementById('groups-container');
-
+    const zona = document.getElementById('zona-select').value;
+    const grupos = obtenerGruposZona(zona);
+    const cont = document.getElementById('groups-container');
     cont.innerHTML = '';
     grupos.forEach((g, i) => {
-        cont.innerHTML += `
-        <label id="gr-${i}" class="group-row">
-            <span class="group-name-text">${g.name}</span>
-            <input type="checkbox" checked value="${g.url}" class="sp-group">
-        </label>`;
+        cont.innerHTML += `<label id="gr-${i}" class="group-row"><span class="group-name-text">${g.name}</span><input type="checkbox" checked value="${g.url}" class="sp-group"></label>`;
     });
-
     actualizarUI();
 }
 
 function actualizarUI() {
     const checkboxes = document.querySelectorAll('.sp-group');
     const total = checkboxes.length;
-
     document.getElementById('tot-idx').textContent = total;
     document.getElementById('cur-idx').textContent = Math.min(currentIndex, total);
-
     const pct = total > 0 ? Math.round((currentIndex / total) * 100) : 0;
     document.getElementById('track-pct').textContent = `${pct}%`;
     document.getElementById('progress-fill').style.width = `${pct}%`;
-
     checkboxes.forEach((_, idx) => {
         const row = document.getElementById(`gr-${idx}`);
         if (!row) return;
@@ -1319,13 +1269,11 @@ function actualizarUI() {
             row.classList.add('active');
             document.getElementById('track-name').textContent = row.querySelector('.group-name-text').textContent;
             row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        } else {
-            row.classList.remove('active');
-        }
+        } else row.classList.remove('active');
     });
 }
 
-// ── WAKELOCK ──────────────────────────────────────────
+// ── WAKELOCK ───────────────────────────────────────────────────────────────
 async function solicitarWakeLock() {
     if ('wakeLock' in navigator) {
         try {
@@ -1333,12 +1281,9 @@ async function solicitarWakeLock() {
             document.getElementById('wl-status-text').textContent = 'Activo';
             document.getElementById('wl-status-text').style.color = 'var(--accent)';
             document.getElementById('wakelock-badge').textContent = '⚡';
-        } catch(e) {
-            console.warn('WakeLock no disponible:', e);
-        }
+        } catch(e) { console.warn(e); }
     }
 }
-
 function liberarWakeLock() {
     if (wakeLock) { wakeLock.release(); wakeLock = null; }
     document.getElementById('wl-status-text').textContent = 'Inactivo';
@@ -1346,70 +1291,38 @@ function liberarWakeLock() {
     document.getElementById('wakelock-badge').textContent = '🔒';
 }
 
-// ── MOTOR DE TRANSMISIÓN (Sincronizado con Tampermonkey) ──────────
-// El dashboard construye la COLA de URLs y activa el flag sp_bot_active.
-// El script de Tampermonkey en Kiwi Browser lee esa cola y publica.
-// El índice sp_idx avanza desde Tampermonkey al terminar cada grupo.
-// El dashboard hace polling cada 3s para reflejar el avance en tiempo real.
-
-let pollingInterval = null;
-
+// ── MOTOR DE TRANSMISIÓN ───────────────────────────────────────────────────
 function construirCola() {
-    // Lee todos los grupos seleccionados (checkboxes marcados)
     const checkboxes = Array.from(document.querySelectorAll('.sp-group:checked'));
-    // Toma solo los que están por encima del índice actual
     return checkboxes.slice(currentIndex).map(cb => cb.value);
 }
 
 function lanzarMotor() {
     const copies = localStorage.getItem('sp_copies');
-    if (!copies || JSON.parse(copies).length === 0) {
-        toast('Genera variaciones de IA primero.'); return;
-    }
-
+    if (!copies || JSON.parse(copies).length === 0) { toast('Genera variaciones de IA o manuales primero.'); return; }
     const cola = construirCola();
-    if (cola.length === 0) {
-        toast('No hay grupos pendientes en la cola.'); return;
-    }
-
-    // Guardar cola para que Tampermonkey la lea
-    localStorage.setItem('sp_queue',      JSON.stringify(cola));
+    if (cola.length === 0) { toast('No hay grupos pendientes'); return; }
+    localStorage.setItem('sp_queue', JSON.stringify(cola));
     localStorage.setItem('sp_bot_active', 'true');
-    localStorage.setItem('sp_idx',        String(currentIndex));
-
-    // UI → estado activo
-    document.getElementById('btn-play').style.display  = 'none';
+    localStorage.setItem('sp_idx', String(currentIndex));
+    document.getElementById('btn-play').style.display = 'none';
     document.getElementById('btn-pause').style.display = 'block';
     document.getElementById('eq-anim').classList.add('active');
-    document.getElementById('motor-status').innerHTML  = '<span class="dot green"></span>TRANSMITIENDO';
-    document.getElementById('motor-status').className  = 'value status-running';
-
+    document.getElementById('motor-status').innerHTML = '<span class="dot green"></span>TRANSMITIENDO';
+    document.getElementById('motor-status').className = 'value status-running';
     solicitarWakeLock();
-    log(`▶ Motor activo. Cola: ${cola.length} grupos. Abre Facebook en Kiwi Browser.`, 'log-info');
-    log(`➡ Primer grupo: ${cola[0]}`, 'log-info');
-
-    // Abre el primer grupo automáticamente en nueva pestaña de Kiwi
-    // (funciona porque Kiwi Browser permite window.open desde scripts)
-    try {
-        window.open(cola[0], '_blank');
-        log('🌐 Facebook abierto en nueva pestaña.', 'log-info');
-    } catch(e) {
-        log('⚠ Abre manualmente Facebook → el script tomará el control.', 'log-warn');
-    }
-
-    // Polling: revisa cada 4s si Tampermonkey avanzó el índice
+    log(`▶ Motor activo. Cola: ${cola.length} grupos.`, 'log-info');
+    try { window.open(cola[0], '_blank'); log('🌐 Facebook abierto', 'log-info'); } catch(e) { log('Abre manualmente', 'log-warn'); }
+    if (pollingInterval) clearInterval(pollingInterval);
     pollingInterval = setInterval(() => {
         const idxGuardado = parseInt(localStorage.getItem('sp_idx') || '0');
         if (idxGuardado !== currentIndex) {
             currentIndex = idxGuardado;
             actualizarUI();
-
             const colaActual = JSON.parse(localStorage.getItem('sp_queue') || '[]');
-            const nombreGrupo = document.getElementById(`gr-${currentIndex - 1}`)?.querySelector('.group-name-text')?.textContent || `Grupo #${currentIndex}`;
-            log(`✓ Publicado en: ${nombreGrupo}`, 'log-success');
-
+            log(`✓ Publicado en grupo #${currentIndex}`, 'log-success');
             if (colaActual.length === 0 || localStorage.getItem('sp_bot_active') !== 'true') {
-                log('🏁 Cola completada. Ciclo finalizado.', 'log-info');
+                log('🏁 Cola completada.', 'log-info');
                 detenerMotor();
                 currentIndex = 0;
                 localStorage.setItem('sp_idx', '0');
@@ -1420,74 +1333,39 @@ function lanzarMotor() {
 }
 
 function detenerMotor() {
-    clearInterval(pollingInterval);
+    if (pollingInterval) clearInterval(pollingInterval);
     localStorage.setItem('sp_bot_active', 'false');
-
-    document.getElementById('btn-play').style.display  = 'block';
+    document.getElementById('btn-play').style.display = 'block';
     document.getElementById('btn-pause').style.display = 'none';
     document.getElementById('eq-anim').classList.remove('active');
-    document.getElementById('motor-status').innerHTML  = '<span class="dot amber"></span>EN PAUSA';
-    document.getElementById('motor-status').className  = 'value status-paused';
-
+    document.getElementById('motor-status').innerHTML = '<span class="dot amber"></span>EN PAUSA';
+    document.getElementById('motor-status').className = 'value status-paused';
     liberarWakeLock();
-    log(`⏸ Motor pausado. Posición guardada en grupo #${currentIndex + 1}.`, 'log-warn');
+    log(`⏸ Motor pausado. Posición en grupo #${currentIndex+1}`, 'log-warn');
 }
 
 function saltarGrupo(dir) {
     const total = document.querySelectorAll('.sp-group').length;
     if (total === 0) return;
-    currentIndex = Math.max(0, Math.min(total - 1, currentIndex + dir));
+    currentIndex = Math.max(0, Math.min(total-1, currentIndex + dir));
     localStorage.setItem('sp_idx', currentIndex);
     actualizarUI();
-    log(`Salto manual → grupo #${currentIndex + 1}`);
+    log(`Salto manual → grupo #${currentIndex+1}`);
 }
 
-// ── FLYER ─────────────────────────────────────────────
-function onFlyerCargado() {
-    const fi = document.getElementById('gallery-input');
-    if (fi.files.length > 0) {
-        document.getElementById('flyer-preview-row').classList.remove('hidden');
-        log('Flyer cargado en memoria.', 'log-info');
-    }
-}
-
-function verFlyerActual() {
-    const fi = document.getElementById('gallery-input');
-    if (fi.files && fi.files[0]) {
-        const url = URL.createObjectURL(fi.files[0]);
-        document.getElementById('flyer-img').src = url;
-        document.getElementById('flyer-modal').classList.add('open');
-    }
-}
-
-function cerrarFlyerModal() {
-    document.getElementById('flyer-modal').classList.remove('open');
-}
-
-// ── ADMIN: GESTIÓN DE CLAVES ──────────────────────────
+// ── ADMIN: GESTIÓN DE CLAVES ───────────────────────────────────────────────
 function generarClaveCliente() {
     const nombre = document.getElementById('client-name-input').value.trim();
-    if (!nombre) { toast('Escribe el nombre del cliente.'); return; }
-
+    if (!nombre) { toast('Escribe nombre'); return; }
     const clave = generarClave(nombre);
     const ahora = new Date();
-    const vence = new Date(ahora.getFullYear(), ahora.getMonth() + 1, ahora.getDate());
-
-    clientKeys[clave] = {
-        nombre,
-        telefonos: 1,           // Por defecto 1 número (puedes editarlo manualmente en el objeto)
-        vence: vence.toLocaleDateString('es-MX'),
-        generado: ahora.toLocaleDateString('es-MX')
-    };
-
+    const vence = new Date(ahora.getFullYear(), ahora.getMonth()+1, ahora.getDate());
+    clientKeys[clave] = { nombre, telefonos: 1, vence: vence.toLocaleDateString('es-MX'), generado: ahora.toLocaleDateString('es-MX') };
     localStorage.setItem('sp_keys', JSON.stringify(clientKeys));
     renderizarTablaClaves();
     document.getElementById('client-name-input').value = '';
-
-    // Copiar al portapapeles automáticamente
     navigator.clipboard.writeText(clave).catch(()=>{});
     toast(`✦ Clave: ${clave} (copiada)`);
-    log(`Clave generada para "${nombre}": ${clave}`, 'log-success');
 }
 
 function revocarClave(clave) {
@@ -1501,32 +1379,17 @@ function revocarClave(clave) {
 function renderizarTablaClaves() {
     const tbody = document.getElementById('keys-tbody');
     tbody.innerHTML = '';
-
     const entradas = Object.entries(clientKeys);
-    if (entradas.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-3);padding:.75rem .5rem;text-align:center;font-size:.7rem;">Sin claves generadas</td></tr>';
-        return;
-    }
-
+    if (entradas.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-3);text-align:center;">Sin claves generadas</td></tr>'; return; }
     entradas.forEach(([clave, info]) => {
         const match = clave.match(/SP-([A-Z0-9]+)(\d{2})(\d{2})$/);
-        const mes   = match ? parseInt(match[2]) : 0;
-        const anio  = match ? parseInt('20'+match[3]) : 0;
+        const mes = match ? parseInt(match[2]) : 0, anio = match ? parseInt('20'+match[3]) : 0;
         const ahora = new Date();
-        const vencida = (anio < ahora.getFullYear()) ||
-                        (anio === ahora.getFullYear() && mes < ahora.getMonth()+1);
-
-        tbody.innerHTML += `<tr>
-            <td>${info.nombre}</td>
-            <td class="key-val">${clave}</td>
-            <td class="key-exp ${vencida?'expired':''}">${info.vence}${vencida?' ✕':''}</td>
-            <td style="text-align:center;color:var(--text-2)">${info.telefonos}</td>
-            <td><button class="btn-revoke" onclick="revocarClave('${clave}')">Revocar</button></td>
-        </tr>`;
+        const vencida = (anio < ahora.getFullYear()) || (anio === ahora.getFullYear() && mes < ahora.getMonth()+1);
+        tbody.innerHTML += `<tr><td>${info.nombre}</td><td class="key-val">${clave}</td><td class="key-exp ${vencida?'expired':''}">${info.vence}${vencida?' ✕':''}</td><td style="text-align:center;">${info.telefonos}</td><td><button class="btn-revoke" onclick="revocarClave('${clave}')">Revocar</button></td></tr>`;
     });
 }
 
-// ── SESIÓN ────────────────────────────────────────────
 function cerrarSesion() {
     detenerMotor();
     localStorage.removeItem('sp_auth');
@@ -1534,12 +1397,88 @@ function cerrarSesion() {
     window.location.reload();
 }
 
-// ── AUTO-LOGIN ────────────────────────────────────────
+// ── AUTO-LOGIN ──────────────────────────────────────────────────────────────
 (function autoLogin() {
     const clave = localStorage.getItem('sp_auth');
-    if (!clave) return;
-    document.getElementById('access-key').value = clave;
-    verificarAcceso();
+    if (clave) { document.getElementById('access-key').value = clave; verificarAcceso(); }
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// GUÍA INTERACTIVA NEON (NO INTERFIERE CON NINGUNA FUNCIÓN EXISTENTE)
+// ═══════════════════════════════════════════════════════════════════════════
+(function iniciarGuiaNeon() {
+    if (localStorage.getItem('sp_tutorial_completed') === 'true') return;
+    const pasos = [
+        { selector: '#base-prompt', completado: () => document.getElementById('base-prompt').value.trim().length > 10, mensaje: '✏️ Escribe tu oferta base (ej: Internet 100MB + TV)' },
+        { selector: '#gallery-input', completado: () => { const input = document.getElementById('gallery-input'); return input.files && input.files.length > 0; }, mensaje: '🖼️ Sube al menos 5 imágenes (flyers, promos)' },
+        { selector: '#btn-generate', completado: () => { const copies = localStorage.getItem('sp_copies'); return copies && JSON.parse(copies).length >= 3; }, mensaje: '✨ Genera 3 variaciones de texto con IA o manualmente' },
+        { selector: '.groups-container .group-row:first-child input', completado: () => document.querySelectorAll('.sp-group:checked').length > 0, mensaje: '📌 Selecciona los grupos donde publicarás' },
+        { selector: '#btn-play', completado: () => false, mensaje: '🚀 Presiona PLAY y mira cómo publica automáticamente' }
+    ];
+    let pasoActual = parseInt(localStorage.getItem('sp_tutorial_step') || '0');
+    let resaltadorActivo = null;
+    function limpiarResaltado() {
+        if (resaltadorActivo) {
+            resaltadorActivo.classList.remove('neon-guide-highlight');
+            resaltadorActivo = null;
+        }
+    }
+    function resaltarElemento(el) {
+        if (!el) return;
+        limpiarResaltado();
+        resaltadorActivo = el;
+        el.classList.add('neon-guide-highlight');
+    }
+    function mostrarMensajePaso(idx) {
+        if (idx >= pasos.length) return;
+        if (typeof toast === 'function') toast(pasos[idx].mensaje, 4000);
+    }
+    function verificarYAvanzar() {
+        if (pasoActual >= pasos.length) {
+            localStorage.setItem('sp_tutorial_completed', 'true');
+            localStorage.removeItem('sp_tutorial_step');
+            limpiarResaltado();
+            toast('🎉 ¡Felicidades! Ya dominas ShadowPost Pro. ¡A vender!', 5000);
+            return;
+        }
+        const paso = pasos[pasoActual];
+        const elemento = document.querySelector(paso.selector);
+        const completado = paso.completado();
+        if (completado) {
+            pasoActual++;
+            localStorage.setItem('sp_tutorial_step', pasoActual);
+            limpiarResaltado();
+            if (pasoActual < pasos.length) {
+                const sigElemento = document.querySelector(pasos[pasoActual].selector);
+                if (sigElemento) resaltarElemento(sigElemento);
+                mostrarMensajePaso(pasoActual);
+            } else verificarYAvanzar();
+        } else {
+            if (elemento && resaltadorActivo !== elemento) {
+                resaltarElemento(elemento);
+                mostrarMensajePaso(pasoActual);
+            }
+        }
+    }
+    function iniciarObservadores() {
+        const observer = new MutationObserver(() => verificarYAvanzar());
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['value', 'files'] });
+        document.getElementById('base-prompt')?.addEventListener('input', () => verificarYAvanzar());
+        document.getElementById('gallery-input')?.addEventListener('change', () => verificarYAvanzar());
+        document.getElementById('btn-generate')?.addEventListener('click', () => setTimeout(verificarYAvanzar, 800));
+        document.querySelector('.groups-container')?.addEventListener('change', (e) => { if (e.target.classList?.contains('sp-group')) verificarYAvanzar(); });
+        document.getElementById('btn-play')?.addEventListener('click', () => {
+            if (pasoActual === pasos.length-1) {
+                pasoActual++; localStorage.setItem('sp_tutorial_step', pasoActual);
+                localStorage.setItem('sp_tutorial_completed', 'true');
+                limpiarResaltado();
+                toast('🚀 ¡Motor lanzado! Observa la barra de progreso.', 5000);
+            }
+        });
+        setInterval(verificarYAvanzar, 2000);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { verificarYAvanzar(); iniciarObservadores(); });
+    else { verificarYAvanzar(); iniciarObservadores(); }
 })();
 </script>
 </body>
